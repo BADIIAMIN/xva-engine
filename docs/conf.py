@@ -42,13 +42,3 @@ plantuml_output_format = "svg"
 # Optional: if you keep UML snippets in separate files
 # you can refer to them from .rst using .. uml:: /_uml/file.puml
 
-extensions = [
-    "sphinx.ext.autodoc",
-    "sphinx.ext.napoleon",
-    "sphinx.ext.autodoc.typehints",
-    "sphinx.ext.viewcode",
-    "sphinxcontrib.plantuml",
-]
-
-plantuml = "plantuml"
-plantuml_output_format = "svg"

@@ -2,57 +2,84 @@
 \label{sec:finding2}
 
 \subsection{Finding statement}
-
-The IR simulation model represents the yield curve on a finite set of maturity
-pillars and relies on numerical interpolation to construct continuous curves.
-This design introduces structural artefacts that may affect local curve smoothness,
-implied forward rates, and exposure profiles. Model outputs may therefore exhibit
-sensitivity to interpolation choices and maturity grid specification.
+The IR simulation framework represents the yield curve on a finite set of maturity pillars and
+relies on numerical interpolation to obtain curve values at non-pillar maturities required for
+pricing, discounting, and exposure computations. This representation introduces structural artefacts
+that may affect local curve smoothness, implied forward rates, and exposure profiles. In particular,
+model outputs may exhibit sensitivity to (i) the chosen interpolation scheme and (ii) the pillar grid
+density.
 
 \subsection{Model features giving rise to the finding}
-
-The finding arises from the following structural features:
+The finding arises from the following design features:
 \begin{itemize}
-	\item Zero rates are simulated only at a discrete set of maturity pillars.
-	\item Pricing and discounting require curve values at non-pillar maturities.
-	\item Interpolation schemes are applied ex post and are not model-consistent.
+	\item Zero rates are simulated only at discrete maturity pillars $\{T_k\}$.
+	\item Discount factors and forward rates at intermediate maturities are obtained via interpolation.
+	\item Interpolation is applied ex post and is not enforced by the stochastic model dynamics.
 \end{itemize}
-
-As a result, numerical artefacts may be introduced independently of the underlying
-stochastic dynamics.
+Consequently, the interpolation operator imposes additional structure that is not implied by the
+underlying stochastic specification.
 
 \subsection{Risk implications for PFE}
-
-Interpolation-induced artefacts may lead to:
+Interpolation artefacts may lead to:
 \begin{itemize}
-	\item Artificial oscillations in implied forward rates.
-	\item Localised distortions of discount factors at intermediate maturities.
-	\item Sensitivity of exposure profiles to curve discretisation choices.
+	\item Artificial oscillations in the implied forward curve and local forward-rate spikes.
+	\item Distortions of intermediate discount factors and local curve curvature.
+	\item Sensitivity of exposure profiles (especially long-dated or convexity-sensitive products) to
+	numerical choices rather than economic risk-factor dynamics.
 \end{itemize}
 
-These effects are particularly relevant for products sensitive to forward rates
-or convexity, and for long-dated exposures.
-
 \subsection{Validation strategy and diagnostics}
-
-Three diagnostics are implemented to substantiate this finding:
+Three complementary diagnostics are implemented:
 \begin{enumerate}
-	\item Interpolation sensitivity across numerical schemes.
-	\item Roughness of implied forward-rate curves.
-	\item Stability under changes in maturity pillar density.
+	\item \textbf{Interpolation sensitivity (T2.1):} compare interpolated curves generated from identical pillar data
+	under alternative interpolation schemes (linear-on-zero vs linear-on-logDF) and report RMS / max deviations.
+	\item \textbf{Implied forward roughness (T2.2):} compute the implied instantaneous forward curve on a dense grid and
+	quantify roughness via an integrated curvature proxy.
+	\item \textbf{Pillar density stress (T2.3):} compare curves reconstructed from the full pillar set to curves reconstructed
+	from a coarse pillar subset and quantify deviations on a common dense grid.
 \end{enumerate}
+Diagnostics are produced for the current model and for the HW1F benchmark to separate structural interpolation artefacts
+from numerical noise.
 
 \subsection{Empirical evidence}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\textwidth]{finding2/current_interp_sensitivity_rms_bands.png}
+	\caption{Current model (T2.1): interpolation sensitivity (RMS difference) over time.}
+	\label{fig:f2_interp_rms_current}
+\end{figure}
 
-[Figures to be inserted here:
-interpolation differences,
-forward roughness plots,
-pillar density comparison plots.]
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\textwidth]{finding2/hw1f_interp_sensitivity_rms_bands.png}
+	\caption{HW1F benchmark (T2.1): interpolation sensitivity (RMS difference) over time.}
+	\label{fig:f2_interp_rms_hw}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\textwidth]{finding2/current_forward_roughness_linear_bands.png}
+	\caption{Current model (T2.2): implied forward roughness (linear-on-zero) over time.}
+	\label{fig:f2_rough_lin_current}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\textwidth]{finding2/current_forward_roughness_logdf_bands.png}
+	\caption{Current model (T2.2): implied forward roughness (linear-on-logDF) over time.}
+	\label{fig:f2_rough_logdf_current}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\textwidth]{finding2/current_pillar_density_rms_bands.png}
+	\caption{Current model (T2.3): pillar density stress (full vs coarse pillar set), RMS difference over time.}
+	\label{fig:f2_density_current}
+\end{figure}
 
 \subsection{Conclusion}
-
-The diagnostics demonstrate that the discrete pillar representation combined with
-numerical interpolation introduces structural artefacts in the simulated term
-structures. These artefacts are model-design driven and may materially affect
-exposure calculations. Appropriate controls, monitoring, and sensitivity analyses
-are therefore required.
+The discrete pillar representation combined with ex post interpolation introduces structural artefacts that are not implied
+by the underlying stochastic model. The implemented diagnostics quantify sensitivity to interpolation scheme, identify
+potential roughness in implied forward curves, and demonstrate grid-dependence under pillar coarsening. These effects are
+model-design driven and should be controlled via (i) consistent interpolation policy, (ii) sensitivity monitoring, and
+(iii) appropriate pillar grid specification for long-dated exposure calculations.

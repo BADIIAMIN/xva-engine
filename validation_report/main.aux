@@ -40,30 +40,62 @@
 \newlabel{fig:finding1_wedge_vs_maturity_hw@cref}{{[figure][8][]8}{[1][6][]7}{}{}{}}
 \@writefile{toc}{\contentsline {paragraph}{Discount-factor wedge (multiplicative consistency).}{7}{figure.caption.12}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.6}Conclusion}{7}{subsection.2.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {A}Appendix A — Theory background}{8}{appendix.A}\protected@file@percent }
-\newlabel{app:theory}{{A}{8}{Appendix A — Theory background}{appendix.A}{}}
-\newlabel{app:theory@cref}{{[section][1][]A}{[1][8][]8}{}{}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.1}No-arbitrage relationships used in diagnostics}{8}{subsection.A.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Discount factors and monotonicity.}{8}{section*.13}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Forward-rate reconstruction identity.}{8}{section*.14}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2}Pathwise vs marginal consistency}{8}{subsection.A.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.3}Benchmark rationale: Hull--White one-factor (HW1F)}{8}{subsection.A.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {B}Appendix B — Formal diagnostic definitions}{8}{appendix.B}\protected@file@percent }
-\newlabel{app:diagnostics}{{B}{8}{Appendix B — Formal diagnostic definitions}{appendix.B}{}}
-\newlabel{app:diagnostics@cref}{{[section][2][]B}{[1][8][]8}{}{}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {B.1}Static discount-factor monotonicity test}{8}{subsection.B.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {B.2}Kink index: cross-tenor smoothness diagnostic}{9}{subsection.B.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {B.3}Discount-factor wedge: multiplicative consistency diagnostic}{9}{subsection.B.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {B.4}Interpretation and complementarity}{9}{subsection.B.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {C}Appendix C — Algorithmic implementation and benchmark model}{9}{appendix.C}\protected@file@percent }
-\newlabel{app:algorithms}{{C}{9}{Appendix C — Algorithmic implementation and benchmark model}{appendix.C}{}}
-\newlabel{app:algorithms@cref}{{[section][3][]C}{[1][9][]9}{}{}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {C.1}Hull--White one-factor (HW1F) model}{9}{subsection.C.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {C.1.1}Zero-coupon bond prices}{10}{subsubsection.C.1.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {C.1.2}Calibration}{10}{subsubsection.C.1.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {C.2}Algorithmic computation of diagnostics}{10}{subsection.C.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {C.2.1}DF monotonicity heatmap}{10}{subsubsection.C.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {C.2.2}Kink index bands}{10}{subsubsection.C.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {C.2.3}Wedge statistics}{10}{subsubsection.C.2.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {C.3}Reproducibility and governance considerations}{10}{subsection.C.3}\protected@file@percent }
-\gdef \@abspage@last{10}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Finding 2 — Pillar Discretisation and Interpolation Artefacts}{8}{section.3}\protected@file@percent }
+\newlabel{sec:finding2}{{3}{8}{Finding 2 — Pillar Discretisation and Interpolation Artefacts}{section.3}{}}
+\newlabel{sec:finding2@cref}{{[section][3][]3}{[1][8][]8}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Finding statement}{8}{subsection.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Model features giving rise to the finding}{8}{subsection.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Risk implications for PFE}{8}{subsection.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Validation strategy and diagnostics}{8}{subsection.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Empirical evidence}{9}{subsection.3.5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Current model (T2.1): interpolation sensitivity (RMS difference) over time.}}{9}{figure.caption.13}\protected@file@percent }
+\newlabel{fig:f2_interp_rms_current}{{9}{9}{Current model (T2.1): interpolation sensitivity (RMS difference) over time}{figure.caption.13}{}}
+\newlabel{fig:f2_interp_rms_current@cref}{{[figure][9][]9}{[1][8][]9}{}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces HW1F benchmark (T2.1): interpolation sensitivity (RMS difference) over time.}}{10}{figure.caption.14}\protected@file@percent }
+\newlabel{fig:f2_interp_rms_hw}{{10}{10}{HW1F benchmark (T2.1): interpolation sensitivity (RMS difference) over time}{figure.caption.14}{}}
+\newlabel{fig:f2_interp_rms_hw@cref}{{[figure][10][]10}{[1][9][]10}{}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Current model (T2.2): implied forward roughness (linear-on-zero) over time.}}{11}{figure.caption.15}\protected@file@percent }
+\newlabel{fig:f2_rough_lin_current}{{11}{11}{Current model (T2.2): implied forward roughness (linear-on-zero) over time}{figure.caption.15}{}}
+\newlabel{fig:f2_rough_lin_current@cref}{{[figure][11][]11}{[1][10][]11}{}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Current model (T2.2): implied forward roughness (linear-on-logDF) over time.}}{12}{figure.caption.16}\protected@file@percent }
+\newlabel{fig:f2_rough_logdf_current}{{12}{12}{Current model (T2.2): implied forward roughness (linear-on-logDF) over time}{figure.caption.16}{}}
+\newlabel{fig:f2_rough_logdf_current@cref}{{[figure][12][]12}{[1][11][]12}{}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Current model (T2.3): pillar density stress (full vs coarse pillar set), RMS difference over time.}}{13}{figure.caption.17}\protected@file@percent }
+\newlabel{fig:f2_density_current}{{13}{13}{Current model (T2.3): pillar density stress (full vs coarse pillar set), RMS difference over time}{figure.caption.17}{}}
+\newlabel{fig:f2_density_current@cref}{{[figure][13][]13}{[1][12][]13}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}Conclusion}{13}{subsection.3.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {A}Appendix A — Theory background}{14}{appendix.A}\protected@file@percent }
+\newlabel{app:theory}{{A}{14}{Appendix A — Theory background}{appendix.A}{}}
+\newlabel{app:theory@cref}{{[section][1][]A}{[1][14][]14}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.1}No-arbitrage relationships used in diagnostics}{14}{subsection.A.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Discount factors and monotonicity.}{14}{section*.18}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Forward-rate reconstruction identity.}{14}{section*.19}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2}Pathwise vs marginal consistency}{14}{subsection.A.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.3}Benchmark rationale: Hull--White one-factor (HW1F)}{14}{subsection.A.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {B}Appendix B — Formal diagnostic definitions}{14}{appendix.B}\protected@file@percent }
+\newlabel{app:diagnostics}{{B}{14}{Appendix B — Formal diagnostic definitions}{appendix.B}{}}
+\newlabel{app:diagnostics@cref}{{[section][2][]B}{[1][14][]14}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.1}Static discount-factor monotonicity test}{14}{subsection.B.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.2}Kink index: cross-tenor smoothness diagnostic}{15}{subsection.B.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.3}Discount-factor wedge: multiplicative consistency diagnostic}{15}{subsection.B.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.4}Interpretation and complementarity}{15}{subsection.B.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {C}Appendix C — Algorithmic implementation and benchmark model}{15}{appendix.C}\protected@file@percent }
+\newlabel{app:algorithms}{{C}{15}{Appendix C — Algorithmic implementation and benchmark model}{appendix.C}{}}
+\newlabel{app:algorithms@cref}{{[section][3][]C}{[1][15][]15}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.1}Hull--White one-factor (HW1F) model}{15}{subsection.C.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {C.1.1}Zero-coupon bond prices}{16}{subsubsection.C.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {C.1.2}Calibration}{16}{subsubsection.C.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.2}Algorithmic computation of diagnostics}{16}{subsection.C.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {C.2.1}DF monotonicity heatmap}{16}{subsubsection.C.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {C.2.2}Kink index bands}{16}{subsubsection.C.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {C.2.3}Wedge statistics}{16}{subsubsection.C.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.3}Reproducibility and governance considerations}{16}{subsection.C.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.4}Interpolation and discretisation: theoretical considerations}{17}{subsection.C.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.5}RMS difference (interpolation sensitivity)}{17}{subsection.C.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.6}Implied forward curve and roughness proxy}{17}{subsection.C.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.7}Pillar density stress metric}{17}{subsection.C.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.8}Finding 2 — Implementation mapping}{18}{subsection.C.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.9}Interpolation sensitivity (T2.1): pseudo-code}{18}{subsection.C.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.10}Forward roughness (T2.2): pseudo-code}{18}{subsection.C.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.11}Pillar density stress (T2.3): pseudo-code}{18}{subsection.C.11}\protected@file@percent }
+\gdef \@abspage@last{18}

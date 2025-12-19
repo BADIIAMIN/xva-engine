@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.9.23)  19 DEC 2025 07:43
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.9.23)  19 DEC 2025 09:18
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -752,40 +752,155 @@ ut line 105.
 res/finding1/hw_wedge_hist.png> <./figures/finding1/current_wedge_vs_maturity.p
 ng>])
 
-[7 <./figures/finding1/hw_wedge_vs_maturity.png>]
-(./appendices/appendix_theory.tex) (./appendices/appendix_diagnostics.tex
+[7 <./figures/finding1/hw_wedge_vs_maturity.png>] (./sections/finding2.tex
 
-[8{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}])
-(./appendices/appendix_algorithms.tex
+LaTeX Warning: File `finding2/current_interp_sensitivity_rms_bands.png' not fou
+nd on input line 47.
 
-[9]
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 5
-3.
- (/usr/local/texlive/2025/texmf-dist/tex/latex/lm/t1lmtt.fd
+
+! Package pdftex.def Error: File `finding2/current_interp_sensitivity_rms_bands
+.png' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.47 .../current_interp_sensitivity_rms_bands.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 4
+7.
+(/usr/local/texlive/2025/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `lmtt' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-)
 
-[10] (./main.aux)
+
+[8]
+
+LaTeX Warning: File `finding2/hw1f_interp_sensitivity_rms_bands.png' not found 
+on input line 54.
+
+
+! Package pdftex.def Error: File `finding2/hw1f_interp_sensitivity_rms_bands.pn
+g' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.54 ...ng2/hw1f_interp_sensitivity_rms_bands.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+
+[9]
+
+LaTeX Warning: File `finding2/current_forward_roughness_linear_bands.png' not f
+ound on input line 61.
+
+
+! Package pdftex.def Error: File `finding2/current_forward_roughness_linear_ban
+ds.png' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.61 ...urrent_forward_roughness_linear_bands.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+
+[10]
+
+LaTeX Warning: File `finding2/current_forward_roughness_logdf_bands.png' not fo
+und on input line 68.
+
+
+! Package pdftex.def Error: File `finding2/current_forward_roughness_logdf_band
+s.png' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.68 ...current_forward_roughness_logdf_bands.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+
+[11]
+
+LaTeX Warning: File `finding2/current_pillar_density_rms_bands.png' not found o
+n input line 75.
+
+
+! Package pdftex.def Error: File `finding2/current_pillar_density_rms_bands.png
+' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.75 ...ing2/current_pillar_density_rms_bands.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+
+[12])
+
+[13] (./appendices/appendix_theory.tex) (./appendices/appendix_diagnostics.tex
+
+[14{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}])
+(./appendices/appendix_algorithms.tex
+
+[15]) (./appendices/appendix_theory_2.tex
+
+[16]) (./appendices/appendix_diagnostics_2.tex)
+(./appendices/appendix_algorithms_2.tex
+
+[17])
+
+[18] (./main.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
-Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 6E6086AF52F3F2C06E8617DAB2B1B8C2;6208.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `main.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `main.out':
+(rerunfilecheck)             Before: 6E6086AF52F3F2C06E8617DAB2B1B8C2;6208
+(rerunfilecheck)             After:  22A82C4123C257157B768A6F5D730BE6;9929.
  ) 
 Here is how much of TeX's memory you used:
- 17058 strings out of 473190
- 287731 string characters out of 5715800
+ 17303 strings out of 473190
+ 298501 string characters out of 5715800
  745654 words of memory out of 5000000
- 39897 multiletter control sequences out of 15000+600000
- 621395 words of font info for 133 fonts, out of 8000000 for 9000
+ 40079 multiletter control sequences out of 15000+600000
+ 622236 words of font info for 143 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 69i,6n,79p,1001b,457s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 69i,8n,79p,1001b,562s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/lo
 cal/texlive/2025/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></usr/local/texliv
 e/2025/texmf-dist/fonts/type1/public/lm/lmex10.pfb></usr/local/texlive/2025/tex
@@ -799,10 +914,10 @@ texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2025/texmf-dist
 /fonts/type1/public/lm/lmsy8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type
 1/public/lm/lmtt10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/a
 msfonts/symbols/msbm10.pfb>
-Output written on main.pdf (10 pages, 708739 bytes).
+Output written on main.pdf (18 pages, 726353 bytes).
 PDF statistics:
- 317 PDF objects out of 1000 (max. 8388607)
- 254 compressed objects within 3 object streams
- 54 named destinations out of 1000 (max. 500000)
+ 381 PDF objects out of 1000 (max. 8388607)
+ 309 compressed objects within 4 object streams
+ 85 named destinations out of 1000 (max. 500000)
  37625 words of extra memory for PDF output out of 42996 (max. 10000000)
 

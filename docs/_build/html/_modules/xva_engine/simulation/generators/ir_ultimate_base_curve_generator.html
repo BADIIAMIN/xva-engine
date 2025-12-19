@@ -1,0 +1,238 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>xva_engine.simulation.generators.ir_ultimate_base_curve_generator &mdash; XVA / CCR / PFE Engine  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            XVA / CCR / PFE Engine
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../architecture.html">Architecture &amp; Design View</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../simulation_models.html">Simulation Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/api/modules.html">xva_engine</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">XVA / CCR / PFE Engine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">xva_engine.simulation.generators.ir_ultimate_base_curve_generator</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for xva_engine.simulation.generators.ir_ultimate_base_curve_generator</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">xva_engine.simulation.risk_factors.ir.ultimate_base_curve_process</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">UltimateBaseCurveParams</span><span class="p">,</span>
+    <span class="n">UltimateBaseCurveProcess</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">xva_engine.simulation.risk_factors.ir.mean_function</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">MeanFunctionConfig</span><span class="p">,</span>
+    <span class="n">build_forward_forward_mean_function</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">xva_engine.simulation.risk_factors.ir.calibration_historical</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">HistoricalCalibConfig</span><span class="p">,</span>
+    <span class="n">estimate_corr_and_sigma_from_history</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="IrUltimateBaseCurveRunConfig">
+<a class="viewcode-back" href="../../../../source/api/xva_engine.simulation.generators.ir_ultimate_base_curve_generator.html#xva_engine.simulation.generators.ir_ultimate_base_curve_generator.IrUltimateBaseCurveRunConfig">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">IrUltimateBaseCurveRunConfig</span><span class="p">:</span>
+    <span class="n">n_paths</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1234</span>
+    <span class="n">return_driver</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+
+
+<div class="viewcode-block" id="IrUltimateBaseCurveScenarioGenerator">
+<a class="viewcode-back" href="../../../../source/api/xva_engine.simulation.generators.ir_ultimate_base_curve_generator.html#xva_engine.simulation.generators.ir_ultimate_base_curve_generator.IrUltimateBaseCurveScenarioGenerator">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">IrUltimateBaseCurveScenarioGenerator</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates IR zero-rate trajectories for the Ultimate Base Curve model.</span>
+
+<span class="sd">    Notes on architecture:</span>
+<span class="sd">    - This belongs under xva_engine/simulation/generators (trajectory generation).</span>
+<span class="sd">    - It consumes market data (discount curve + history) from your market_data layer.</span>
+<span class="sd">    - It returns a numpy cube (paths, times, pillars). You can wrap into your Cube later.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">pillars_days</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">mean_cfg</span><span class="p">:</span> <span class="n">MeanFunctionConfig</span> <span class="o">=</span> <span class="n">MeanFunctionConfig</span><span class="p">(),</span>
+        <span class="n">hist_cfg</span><span class="p">:</span> <span class="n">HistoricalCalibConfig</span> <span class="o">=</span> <span class="n">HistoricalCalibConfig</span><span class="p">(),</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pillars_days</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">pillars_days</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mean_cfg</span> <span class="o">=</span> <span class="n">mean_cfg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hist_cfg</span> <span class="o">=</span> <span class="n">hist_cfg</span>
+
+<div class="viewcode-block" id="IrUltimateBaseCurveScenarioGenerator.calibrate_historical">
+<a class="viewcode-back" href="../../../../source/api/xva_engine.simulation.generators.ir_ultimate_base_curve_generator.html#xva_engine.simulation.generators.ir_ultimate_base_curve_generator.IrUltimateBaseCurveScenarioGenerator.calibrate_historical">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calibrate_historical</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">rates_hist</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>           <span class="c1"># (Nobs, K) in rate units</span>
+        <span class="n">lam</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">shift_bp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns (corr, sigma, lam_vec) for the process.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hist_cfg</span>
+        <span class="k">if</span> <span class="n">lam</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cfg</span> <span class="o">=</span> <span class="n">HistoricalCalibConfig</span><span class="p">(</span>
+                <span class="n">lam</span><span class="o">=</span><span class="n">lam</span><span class="p">,</span>
+                <span class="n">shift_bp</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">shift_bp</span><span class="p">,</span>
+                <span class="n">return_horizon_days</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">return_horizon_days</span><span class="p">,</span>
+                <span class="n">day_count</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">day_count</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">shift_bp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cfg</span> <span class="o">=</span> <span class="n">HistoricalCalibConfig</span><span class="p">(</span>
+                <span class="n">lam</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">lam</span><span class="p">,</span>
+                <span class="n">shift_bp</span><span class="o">=</span><span class="n">shift_bp</span><span class="p">,</span>
+                <span class="n">return_horizon_days</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">return_horizon_days</span><span class="p">,</span>
+                <span class="n">day_count</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">day_count</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="n">corr</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">estimate_corr_and_sigma_from_history</span><span class="p">(</span><span class="n">rates_hist</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+        <span class="n">K</span> <span class="o">=</span> <span class="n">rates_hist</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">lam_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">lam</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">corr</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">lam_vec</span></div>
+
+
+<div class="viewcode-block" id="IrUltimateBaseCurveScenarioGenerator.generate">
+<a class="viewcode-back" href="../../../../source/api/xva_engine.simulation.generators.ir_ultimate_base_curve_generator.html#xva_engine.simulation.generators.ir_ultimate_base_curve_generator.IrUltimateBaseCurveScenarioGenerator.generate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">time_grid</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>             <span class="c1"># (T,) year fractions</span>
+        <span class="n">df0</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span> <span class="nb">float</span><span class="p">],</span>     <span class="c1"># DF(0,t) callable</span>
+        <span class="n">corr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">sigma</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">lam</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">shift_bp</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">run</span><span class="p">:</span> <span class="n">IrUltimateBaseCurveRunConfig</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns dict:</span>
+<span class="sd">          - &#39;rates&#39;: (n_paths, T, K)</span>
+<span class="sd">          - optionally &#39;driver&#39;: (n_paths, T, K)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">UltimateBaseCurveParams</span><span class="p">(</span>
+            <span class="n">pillars_days</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pillars_days</span><span class="p">,</span>
+            <span class="n">shift_bp</span><span class="o">=</span><span class="n">shift_bp</span><span class="p">,</span>
+            <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span>
+            <span class="n">lam</span><span class="o">=</span><span class="n">lam</span><span class="p">,</span>
+            <span class="n">delta_floor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mean_cfg</span><span class="o">.</span><span class="n">delta_floor</span><span class="p">,</span>
+            <span class="n">day_count</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mean_cfg</span><span class="o">.</span><span class="n">day_count</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">process</span> <span class="o">=</span> <span class="n">UltimateBaseCurveProcess</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">corr</span><span class="o">=</span><span class="n">corr</span><span class="p">)</span>
+
+        <span class="n">g</span> <span class="o">=</span> <span class="n">build_forward_forward_mean_function</span><span class="p">(</span>
+            <span class="n">time_grid</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">time_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span>
+            <span class="n">pillars_days</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pillars_days</span><span class="p">,</span>
+            <span class="n">df0</span><span class="o">=</span><span class="n">df0</span><span class="p">,</span>
+            <span class="n">cfg</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mean_cfg</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span>
+            <span class="n">time_grid</span><span class="o">=</span><span class="n">time_grid</span><span class="p">,</span>
+            <span class="n">mean_function</span><span class="o">=</span><span class="n">g</span><span class="p">,</span>
+            <span class="n">n_paths</span><span class="o">=</span><span class="n">run</span><span class="o">.</span><span class="n">n_paths</span><span class="p">,</span>
+            <span class="n">seed</span><span class="o">=</span><span class="n">run</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span>
+            <span class="n">return_driver</span><span class="o">=</span><span class="n">run</span><span class="o">.</span><span class="n">return_driver</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">out</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rates&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">run</span><span class="o">.</span><span class="n">return_driver</span> <span class="ow">and</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">out</span><span class="p">[</span><span class="s2">&quot;driver&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Amine Badii.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

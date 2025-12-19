@@ -1,0 +1,455 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{algpseudocode}
+\usepackage{booktabs}
+\usepackage{geometry}
+ 
+\usepackage{graphicx}    % ← REQUIRED for \includegraphics
+\usepackage{float}       % ← REQUIRED for [H]
+\usepackage{caption}
+\usepackage{subcaption}
+
+\geometry{margin=1in}
+
+
+% in main.tex or preamble
+\graphicspath{{../outputs/}}
+
+
+ 
+
+\title{Interest Rate Model Documentation\\
+	{\large Comprehensive Model Description, Assumptions, and Limitations}}
+\author{MUFG Securities EMEA plc}
+
+
+\begin{document}
+	
+	\maketitle
+	\tableofcontents
+	\newpage
+	
+	%==============================================================================
+	% MAIN SECTIONS
+	%==============================================================================
+	\section{Finding 1: Absence of Pathwise Arbitrage-Free Term-Structure Dynamics}
+	\label{sec:finding_ir_arbitrage_free}
+	
+	\subsection{Finding Statement}
+	
+	The Interest Rate (IR) simulation model does not enforce pathwise arbitrage-free
+	relationships across maturities.
+	Each zero-rate maturity pillar is simulated as a distinct stochastic process,
+	with cross-tenor dependence introduced exclusively via correlation between latent
+	drivers.
+	As a result, discount-factor multiplicative identities and forward-rate
+	reconstruction conditions are not guaranteed to hold along individual Monte Carlo
+	paths, particularly at long horizons or under elevated volatility regimes.
+	
+	This limitation may lead to economically implausible curve shapes and dynamic
+	inconsistencies in simulated interest-rate term structures.
+	
+	\subsection{Model Mechanics Leading to the Finding}
+	
+	\subsubsection{Pillar-wise Stochastic Construction}
+	
+	In the implemented framework, each maturity pillar $k$ of the ultimate base curve
+	is simulated independently through a shifted exponential Vasicek-type construction:
+	
+	\begin{equation}
+		Y_k(t)
+		=
+		\bigl(g_k(t)+s_k\bigr)
+		\exp\!\left(
+		X_k(t) - \tfrac12 v_k^2(t)
+		\right)
+		-
+		s_k,
+	\end{equation}
+	
+	where:
+	\begin{itemize}
+		\item $X_k(t)$ follows an Ornstein--Uhlenbeck process,
+		\item $g_k(t)$ is a deterministic mean function calibrated from the initial
+		forward-forward curve,
+		\item $s_k$ is a shift ensuring numerical stability,
+		\item $v_k^2(t) = \mathrm{Var}[X_k(t)]$.
+	\end{itemize}
+	
+	Each pillar has its own stochastic driver $X_k$; dependence across maturities is
+	introduced solely through correlation of the Brownian motions driving $X_k$.
+	
+	\subsubsection{Absence of Term-Structure Arbitrage Constraints}
+	
+	The model does not impose:
+	\begin{itemize}
+		\item a short-rate representation,
+		\item an instantaneous forward-rate framework,
+		\item nor Heath--Jarrow--Morton (HJM) drift restrictions linking volatilities and
+		drifts across maturities.
+	\end{itemize}
+	
+	Consequently, while the model is marginally consistent with the initial yield
+	curve in expectation, it does not guarantee joint consistency of the full curve
+	along simulated paths.
+	
+	\subsection{Theoretical Corroboration}
+	
+	\subsubsection{Arbitrage-Free Requirement in Term-Structure Models}
+	
+	In arbitrage-free short-rate or HJM frameworks, discount factors satisfy the
+	pathwise multiplicative identity:
+	
+	\begin{equation}
+		DF(t,t+T)
+		=
+		DF(t,t+u)\cdot DF(t+u,t+T),
+		\qquad \forall\ 0<u<T,
+	\end{equation}
+	
+	since each discount factor is an exponential of the integral of a single
+	underlying short rate over disjoint time intervals.
+	
+	Equivalently, instantaneous forward rates $f(t,T)$ must satisfy HJM drift
+	restrictions of the form:
+	
+	\begin{equation}
+		\alpha(t,T)
+		=
+		\sigma(t,T)\int_t^T \sigma(t,u)\,du,
+	\end{equation}
+	
+	ensuring the absence of arbitrage under the risk-neutral measure.
+	
+	\subsubsection{Why the Implemented Model Violates These Identities}
+	
+	In the current model:
+	\begin{itemize}
+		\item $DF(t,t+T)$ is inferred from the simulated zero rate $Y_T(t)$,
+		\item $DF(t+u,t+T)$ is inferred from an independently simulated curve at time $t+u$,
+		\item no structural constraint enforces multiplicative consistency between the two.
+	\end{itemize}
+	
+	As a result, discount factors reconstructed at different times along a path need
+	not satisfy the multiplicative identity, even in the absence of interpolation
+	effects.
+	
+	\subsection{Practical Implications for PFE}
+	
+	The absence of pathwise arbitrage-free dynamics may result in:
+	\begin{itemize}
+		\item Static inconsistencies, such as non-monotone discount factors or implausible
+		forward-rate shapes at a given time point.
+		\item Dynamic inconsistencies, where long-horizon discount factors do not match the
+		compounded effect of shorter-dated discount factors along the same path.
+		\item Potential bias in exposure profiles, particularly for long-dated interest
+		rate derivatives whose valuation depends on the joint evolution of the full
+		curve.
+	\end{itemize}
+	
+	The materiality of these effects depends on portfolio maturity, volatility regime,
+	and reliance on pathwise discounting.
+	
+	\subsection{Validation Tests and Diagnostics}
+	
+	\subsubsection{Test 1A: Static Discount-Factor Monotonicity}
+	
+	\paragraph{Objective}
+	Verify the absence of static arbitrage at each simulation time by checking
+	monotonicity of implied discount factors.
+	
+	\paragraph{Definition}
+	For each path $p$, time $t_i$, and maturity pillar $M_k$:
+	\begin{equation}
+		DF(t_i,t_i+M_k) := \exp\!\bigl(-Y_k(t_i)\,M_k\bigr).
+	\end{equation}
+	
+	The following condition should hold:
+	\begin{equation}
+		DF(t_i,t_i+M_{k+1}) \le DF(t_i,t_i+M_k),
+		\qquad \forall k.
+	\end{equation}
+	
+	\paragraph{Implementation}
+	Discount factors are computed from simulated zero rates and violations are
+	identified where discount factors increase with maturity.
+	
+	\paragraph{Outputs}
+	\begin{itemize}
+		\item Fraction of violated $(p,t,k)$ triplets.
+		\item Maximum severity of monotonicity breaches.
+		\item Heatmap of violation frequency by time and maturity interval.
+	\end{itemize}
+	
+	\subsubsection{Test 1B: Forward-Rate Reconstruction Sanity}
+	
+	\paragraph{Objective}
+	Assess whether implied forward rates between maturity pillars remain stable and
+	economically plausible.
+	
+	\paragraph{Definition}
+	For $M_i < M_j$, the implied forward rate is:
+	\begin{equation}
+		F_{i,j}(t)
+		=
+		\frac{Y_j(t)M_j - Y_i(t)M_i}{M_j - M_i}.
+	\end{equation}
+	
+	\paragraph{Diagnostics}
+	\begin{itemize}
+		\item Distribution of forward rates by maturity bucket.
+		\item Time evolution of percentile bands.
+		\item Curvature metrics based on second finite differences.
+	\end{itemize}
+	
+	\subsubsection{Test 1C: Pathwise Discount-Factor Multiplicative Identity}
+	
+	\paragraph{Objective}
+	Directly quantify the failure of pathwise arbitrage-free discounting.
+	
+	\paragraph{Definition}
+	For a simulation time step $u$ and maturity $T$:
+	\begin{equation}
+		\mathrm{Wedge}(t,u,T)
+		=
+		\log DF(t,t+T)
+		-
+		\log DF(t,t+u)
+		-
+		\log DF(t+u,t+T).
+	\end{equation}
+	
+	In an arbitrage-free model, this quantity should be approximately zero.
+	
+	\paragraph{Implementation}
+	Discount factors are inferred from simulated curves at times $t$ and $t+u$, and
+	the wedge is computed pathwise.
+	
+	\paragraph{Outputs}
+	\begin{itemize}
+		\item Wedge distributions by maturity.
+		\item Mean and percentile bands over time.
+		\item Fraction of paths exceeding tolerance thresholds.
+	\end{itemize}
+	
+	\subsection{Illustrations}
+	
+	The following figures are produced to support validation and governance:
+	\begin{itemize}
+		\item Discount-factor monotonicity violation heatmaps.
+		\item Forward-rate curvature diagnostics across maturities.
+		\item Wedge distribution histograms for long-dated maturities.
+		\item Wedge magnitude as a function of maturity horizon.
+	\end{itemize}
+	
+	\subsection{Conclusion}
+	
+	The absence of pathwise arbitrage-free term-structure dynamics is an inherent
+	structural feature of the pillar-based IR simulation model and not an
+	implementation defect.
+	
+	While the model remains suitable for PFE applications where marginal distributions
+	dominate risk assessment, the limitation must be explicitly documented,
+	quantitatively monitored, and benchmarked against arbitrage-free frameworks such
+	as HJM or multi-factor short-rate models to assess materiality for specific
+	portfolios.
+	
+	
+	
+	\subsection{Finding 1-Illustration --- Absence of Pathwise Arbitrage-Free Term-Structure Dynamics}
+	\label{subsec:finding1_arbitrage_illustration}
+	
+	This section presents quantitative diagnostics and illustrative evidence supporting
+	Finding~1, namely that the Interest Rate (IR) simulation model does not enforce
+	pathwise arbitrage-free term-structure dynamics. The diagnostics focus on
+	static no-arbitrage conditions, cross-tenor smoothness, and pathwise discount-factor
+	consistency, and are benchmarked against an arbitrage-free Hull--White one-factor
+	(HW1F) model.
+	
+	\medskip
+	
+	\subsubsection{Definition of the kink index (cross-tenor smoothness diagnostic)}
+	
+	Let the simulated zero-rate curve at simulation time $t$ be defined on a discrete set
+	of maturity pillars $\{M_k\}_{k=0}^{K-1}$, with corresponding zero rates
+	$\{Y_k(t)\}_{k=0}^{K-1}$.
+	
+	We define the first finite difference (local slope proxy) as:
+	\[
+	\Delta Y_k(t) = Y_{k+1}(t) - Y_k(t),
+	\]
+	
+	and the second finite difference (local curvature proxy) as:
+	\[
+	\Delta^2 Y_k(t)
+	=
+	Y_{k+1}(t) - 2Y_k(t) + Y_{k-1}(t), \qquad k=1,\dots,K-2.
+	\]
+	
+	The \emph{kink index} at time $t$ is defined as:
+	\[
+	\boxed{
+		\mathrm{Kink}(t)
+		=
+		\max_{k=1,\dots,K-2}
+		\left| \Delta^2 Y_k(t) \right|.
+	}
+	\]
+	
+	The kink index quantifies the maximum local curvature across adjacent maturity
+	pillars. Large values indicate abrupt changes in slope between neighbouring tenors
+	and reflect reduced cross-tenor coherence and economically implausible local
+	deformations of the simulated term structure.
+	
+	\medskip
+	
+	\subsubsection{Static discount-factor monotonicity}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.85\textwidth]{finding1/current_df_monotonicity_heatmap.png}
+		\caption{Current model: frequency of discount-factor monotonicity violations across
+			time and maturity pillar intervals.}
+		\label{fig:finding1_df_monotonicity_current}
+	\end{figure}
+	
+	Figure~\ref{fig:finding1_df_monotonicity_current} reports the frequency with which the
+	static no-arbitrage condition
+	\[
+	DF(t,T_{k+1}) \le DF(t,T_k)
+	\]
+	is violated across simulation time and adjacent maturity pillars under the current
+	model. Violations are observed to increase both with simulation horizon and with
+	maturity, reaching frequencies in excess of 40--50\% for some pillar intervals at
+	longer horizons. This indicates that the simulated curve snapshots are not
+	systematically decreasing in maturity and that static arbitrage conditions are not
+	structurally enforced.
+	
+	\medskip
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.85\textwidth]{finding1/hw_df_monotonicity_heatmap.png}
+		\caption{HW1F benchmark: frequency of discount-factor monotonicity violations.}
+		\label{fig:finding1_df_monotonicity_hw}
+	\end{figure}
+	
+	In contrast, Figure~\ref{fig:finding1_df_monotonicity_hw} shows that under the HW1F
+	benchmark model, monotonicity violations are rare, sporadic, and of limited magnitude.
+	This behaviour is consistent with numerical discretisation effects rather than
+	structural arbitrage.
+	
+	\medskip
+	
+	\subsubsection{Cross-tenor smoothness and kink diagnostics}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.85\textwidth]{finding1/current_kink_bands.png}
+		\caption{Current model: kink index bands (median and 5th--95th percentiles) as a function
+			of simulation time.}
+		\label{fig:finding1_kink_current}
+	\end{figure}
+	
+	Figure~\ref{fig:finding1_kink_current} reports the evolution of the kink index under the
+	current model. The median kink index increases steadily with time, while the upper
+	quantiles exhibit pronounced growth, reaching large values at longer horizons. The
+	widening dispersion indicates that local curve smoothness deteriorates as stochastic
+	variance accumulates, reflecting the absence of structural constraints linking
+	adjacent maturity pillars.
+	
+	\medskip
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.85\textwidth]{finding1/hw_kink_bands.png}
+		\caption{HW1F benchmark: kink index bands.}
+		\label{fig:finding1_kink_hw}
+	\end{figure}
+	
+	Under the HW1F benchmark (Figure~\ref{fig:finding1_kink_hw}), the kink index remains
+	low, stable, and tightly distributed over time. This reflects the fact that the entire
+	curve is generated from a single latent short-rate factor, ensuring smooth and
+	coherent cross-tenor dynamics by construction.
+	
+	\medskip
+	
+	\subsubsection{Pathwise discount-factor multiplicative consistency}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.85\textwidth]{finding1/current_wedge_hist.png}
+		\caption{Current model: distribution of the pathwise discount-factor wedge for
+			$T=20$ years and $u\approx 1$ month.}
+		\label{fig:finding1_wedge_hist_current}
+	\end{figure}
+	
+	Figure~\ref{fig:finding1_wedge_hist_current} displays the distribution of the
+	pathwise discount-factor wedge:
+	\[
+	\log DF(t,T) - \log DF(t,u) - \log DF(t+u,T-u),
+	\]
+	under the current model. The distribution is wide and significantly dispersed away
+	from zero, indicating substantial violations of the multiplicative discount-factor
+	identity along individual simulation paths.
+	
+	\medskip
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.85\textwidth]{finding1/hw_wedge_hist.png}
+		\caption{HW1F benchmark: distribution of the pathwise discount-factor wedge.}
+		\label{fig:finding1_wedge_hist_hw}
+	\end{figure}
+	
+	By contrast, the HW1F benchmark (Figure~\ref{fig:finding1_wedge_hist_hw}) exhibits a
+	tightly concentrated wedge distribution centred near zero, with magnitudes several
+	orders of magnitude smaller, consistent with numerical approximation error only.
+	
+	\medskip
+	
+	\subsubsection{Wedge severity as a function of maturity}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.85\textwidth]{finding1/current_wedge_vs_maturity.png}
+		\caption{Current model: 95th percentile of $|\text{wedge}|$ as a function of maturity.}
+		\label{fig:finding1_wedge_maturity_current}
+	\end{figure}
+	
+	Figure~\ref{fig:finding1_wedge_maturity_current} shows that the severity of pathwise
+	discount-factor inconsistencies increases approximately linearly with maturity under
+	the current model, reaching material levels for long-dated tenors. This indicates
+	that arbitrage violations accumulate with horizon and disproportionately affect
+	long-dated exposures.
+	
+	\medskip
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.85\textwidth]{finding1/hw_wedge_vs_maturity.png}
+		\caption{HW1F benchmark: 95th percentile of $|\text{wedge}|$ versus maturity.}
+		\label{fig:finding1_wedge_maturity_hw}
+	\end{figure}
+	
+	The HW1F benchmark exhibits uniformly low wedge magnitudes across maturities
+	(Figure~\ref{fig:finding1_wedge_maturity_hw}), confirming that no structural
+	amplification of inconsistencies occurs under an arbitrage-free short-rate framework.
+	
+	\medskip
+	
+	\subsubsection{Conclusion}
+	
+	The diagnostics presented above provide consistent and complementary evidence that
+	the current IR simulation model does not enforce pathwise arbitrage-free
+	term-structure dynamics. Violations are systematic, horizon-dependent, and materially
+	larger than those observed under an arbitrage-free benchmark model. While this
+	behaviour is a known and documented consequence of the model design, it represents a
+	structural limitation that must be monitored, benchmarked, and appropriately
+	controlled when assessing long-dated exposure profiles.
+	
+	
+\end{document}

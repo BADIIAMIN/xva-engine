@@ -1,0 +1,897 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Reference &mdash; XVA / CCR / PFE Engine  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="xva_engine" href="source/api/modules.html" />
+    <link rel="prev" title="IR Validation: Arbitrage-Free Diagnostics (Finding 1)" href="validation/api/ir_arbitrage_free.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            XVA / CCR / PFE Engine
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture &amp; Design View</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simulation_models/index.html">Simulation Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation/index.html">Validation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-xva_engine.core.time_grid">Core</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#xva_engine.core.time_grid.TimeGrid"><code class="docutils literal notranslate"><span class="pre">TimeGrid</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.core.time_grid.TimeGrid.times"><code class="docutils literal notranslate"><span class="pre">TimeGrid.times</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.core.time_grid.TimeGrid.as_array"><code class="docutils literal notranslate"><span class="pre">TimeGrid.as_array()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.core.time_grid.TimeGrid.index_of"><code class="docutils literal notranslate"><span class="pre">TimeGrid.index_of()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#xva_engine.core.cube.RiskFactorCube"><code class="docutils literal notranslate"><span class="pre">RiskFactorCube</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.core.cube.RiskFactorCube.data"><code class="docutils literal notranslate"><span class="pre">RiskFactorCube.data</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.core.cube.RiskFactorCube.scenarios"><code class="docutils literal notranslate"><span class="pre">RiskFactorCube.scenarios</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.core.cube.RiskFactorCube.time_grid"><code class="docutils literal notranslate"><span class="pre">RiskFactorCube.time_grid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.core.cube.RiskFactorCube.factors"><code class="docutils literal notranslate"><span class="pre">RiskFactorCube.factors</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#xva_engine.core.cube.ExposureCube"><code class="docutils literal notranslate"><span class="pre">ExposureCube</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.core.cube.ExposureCube.data"><code class="docutils literal notranslate"><span class="pre">ExposureCube.data</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.core.cube.ExposureCube.scenarios"><code class="docutils literal notranslate"><span class="pre">ExposureCube.scenarios</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.core.cube.ExposureCube.time_grid"><code class="docutils literal notranslate"><span class="pre">ExposureCube.time_grid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.core.cube.ExposureCube.trades"><code class="docutils literal notranslate"><span class="pre">ExposureCube.trades</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-xva_engine.market_data.environment">Market Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#xva_engine.market_data.environment.MarketDataEnvironment"><code class="docutils literal notranslate"><span class="pre">MarketDataEnvironment</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.market_data.environment.MarketDataEnvironment.get_curve"><code class="docutils literal notranslate"><span class="pre">MarketDataEnvironment.get_curve()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.market_data.environment.MarketDataEnvironment.get_vol_surface"><code class="docutils literal notranslate"><span class="pre">MarketDataEnvironment.get_vol_surface()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.market_data.environment.MarketDataEnvironment.get_fx_spot"><code class="docutils literal notranslate"><span class="pre">MarketDataEnvironment.get_fx_spot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.market_data.environment.MarketDataEnvironment.get_time_series"><code class="docutils literal notranslate"><span class="pre">MarketDataEnvironment.get_time_series()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#xva_engine.market_data.sources.base.MarketDataSource"><code class="docutils literal notranslate"><span class="pre">MarketDataSource</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.market_data.sources.base.MarketDataSource.get_snapshot"><code class="docutils literal notranslate"><span class="pre">MarketDataSource.get_snapshot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.market_data.sources.base.MarketDataSource.get_time_series"><code class="docutils literal notranslate"><span class="pre">MarketDataSource.get_time_series()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#xva_engine.market_data.sources.dummy_source.DummySource"><code class="docutils literal notranslate"><span class="pre">DummySource</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.market_data.sources.dummy_source.DummySource.get_snapshot"><code class="docutils literal notranslate"><span class="pre">DummySource.get_snapshot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.market_data.sources.dummy_source.DummySource.get_time_series"><code class="docutils literal notranslate"><span class="pre">DummySource.get_time_series()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-xva_engine.models.base">Models &amp; Simulation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#xva_engine.models.base.RiskFactorModel"><code class="docutils literal notranslate"><span class="pre">RiskFactorModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.models.base.RiskFactorModel.calibrate"><code class="docutils literal notranslate"><span class="pre">RiskFactorModel.calibrate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.models.base.RiskFactorModel.simulate_paths"><code class="docutils literal notranslate"><span class="pre">RiskFactorModel.simulate_paths()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#xva_engine.models.gbm_equity.GBMEquityModel"><code class="docutils literal notranslate"><span class="pre">GBMEquityModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.models.gbm_equity.GBMEquityModel.calibrate"><code class="docutils literal notranslate"><span class="pre">GBMEquityModel.calibrate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.models.gbm_equity.GBMEquityModel.simulate_paths"><code class="docutils literal notranslate"><span class="pre">GBMEquityModel.simulate_paths()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#xva_engine.simulation.driver.SimulationDriver"><code class="docutils literal notranslate"><span class="pre">SimulationDriver</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.simulation.driver.SimulationDriver.run"><code class="docutils literal notranslate"><span class="pre">SimulationDriver.run()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-xva_engine.instruments.base">Pricing &amp; Instruments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#xva_engine.instruments.base.Instrument"><code class="docutils literal notranslate"><span class="pre">Instrument</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.instruments.base.Instrument.id"><code class="docutils literal notranslate"><span class="pre">Instrument.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.instruments.base.Instrument.get_cashflows"><code class="docutils literal notranslate"><span class="pre">Instrument.get_cashflows()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#xva_engine.instruments.vanilla.EuropeanOption"><code class="docutils literal notranslate"><span class="pre">EuropeanOption</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.instruments.vanilla.EuropeanOption.underlying"><code class="docutils literal notranslate"><span class="pre">EuropeanOption.underlying</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.instruments.vanilla.EuropeanOption.strike"><code class="docutils literal notranslate"><span class="pre">EuropeanOption.strike</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.instruments.vanilla.EuropeanOption.maturity"><code class="docutils literal notranslate"><span class="pre">EuropeanOption.maturity</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.instruments.vanilla.EuropeanOption.option_type"><code class="docutils literal notranslate"><span class="pre">EuropeanOption.option_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.instruments.vanilla.EuropeanOption.get_cashflows"><code class="docutils literal notranslate"><span class="pre">EuropeanOption.get_cashflows()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#xva_engine.pricing.context.PricingContext"><code class="docutils literal notranslate"><span class="pre">PricingContext</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.pricing.context.PricingContext.market_env"><code class="docutils literal notranslate"><span class="pre">PricingContext.market_env</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.pricing.context.PricingContext.valuation_date"><code class="docutils literal notranslate"><span class="pre">PricingContext.valuation_date</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.pricing.context.PricingContext.measure"><code class="docutils literal notranslate"><span class="pre">PricingContext.measure</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#xva_engine.pricing.engines.base.PricingEngine"><code class="docutils literal notranslate"><span class="pre">PricingEngine</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.pricing.engines.base.PricingEngine.price"><code class="docutils literal notranslate"><span class="pre">PricingEngine.price()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.pricing.engines.base.PricingEngine.price_paths"><code class="docutils literal notranslate"><span class="pre">PricingEngine.price_paths()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#xva_engine.pricing.engines.path_mc.PathwiseMCEngine"><code class="docutils literal notranslate"><span class="pre">PathwiseMCEngine</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.pricing.engines.path_mc.PathwiseMCEngine.price"><code class="docutils literal notranslate"><span class="pre">PathwiseMCEngine.price()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.pricing.engines.path_mc.PathwiseMCEngine.price_paths"><code class="docutils literal notranslate"><span class="pre">PathwiseMCEngine.price_paths()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#xva_engine.pricing.portfolio_pricer.PortfolioPricer"><code class="docutils literal notranslate"><span class="pre">PortfolioPricer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.pricing.portfolio_pricer.PortfolioPricer.price_on_cube"><code class="docutils literal notranslate"><span class="pre">PortfolioPricer.price_on_cube()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-xva_engine.aggregation.exposure">Aggregation &amp; XVA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#xva_engine.aggregation.exposure.ExposureMetrics"><code class="docutils literal notranslate"><span class="pre">ExposureMetrics</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.aggregation.exposure.ExposureMetrics.compute_EE"><code class="docutils literal notranslate"><span class="pre">ExposureMetrics.compute_EE()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.aggregation.exposure.ExposureMetrics.compute_EPE_ENE"><code class="docutils literal notranslate"><span class="pre">ExposureMetrics.compute_EPE_ENE()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.aggregation.exposure.ExposureMetrics.compute_PFE"><code class="docutils literal notranslate"><span class="pre">ExposureMetrics.compute_PFE()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.aggregation.exposure.ExposureMetrics.compute_EEPE"><code class="docutils literal notranslate"><span class="pre">ExposureMetrics.compute_EEPE()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#xva_engine.aggregation.xva.XVAEngine"><code class="docutils literal notranslate"><span class="pre">XVAEngine</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#xva_engine.aggregation.xva.XVAEngine.compute_CVA"><code class="docutils literal notranslate"><span class="pre">XVAEngine.compute_CVA()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#orchestration">Orchestration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="source/api/modules.html">xva_engine</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">XVA / CCR / PFE Engine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h1>
+<section id="module-xva_engine.core.time_grid">
+<span id="core"></span><h2>Core<a class="headerlink" href="#module-xva_engine.core.time_grid" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="xva_engine.core.time_grid.TimeGrid">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">xva_engine.core.time_grid.</span></span><span class="sig-name descname"><span class="pre">TimeGrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">times</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/core/time_grid.html#TimeGrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.core.time_grid.TimeGrid" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Simulation time grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>times</strong> (<em>list</em><em> of </em><em>float</em>) – Monotonically increasing time points (in year fractions)
+at which the simulation state is stored.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The <cite>TimeGrid</cite> is a core primitive shared by the simulation,
+pricing and aggregation layers. All scenario cubes index time
+via an instance of this class.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="xva_engine.core.time_grid.TimeGrid.times">
+<span class="sig-name descname"><span class="pre">times</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#xva_engine.core.time_grid.TimeGrid.times" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.core.time_grid.TimeGrid.as_array">
+<span class="sig-name descname"><span class="pre">as_array</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/core/time_grid.html#TimeGrid.as_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.core.time_grid.TimeGrid.as_array" title="Link to this definition"></a></dt>
+<dd><p>Return the time points as a NumPy array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of shape <code class="docutils literal notranslate"><span class="pre">(n_times,)</span></code> with floating point times.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.core.time_grid.TimeGrid.index_of">
+<span class="sig-name descname"><span class="pre">index_of</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/core/time_grid.html#TimeGrid.index_of"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.core.time_grid.TimeGrid.index_of" title="Link to this definition"></a></dt>
+<dd><p>Return the index of a given time in the grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t</strong> (<em>float</em>) – Time to look up.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Index of the matching time in <code class="docutils literal notranslate"><span class="pre">times</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the time is not present in the grid.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-xva_engine.core.cube">
+<dt class="sig sig-object py" id="xva_engine.core.cube.RiskFactorCube">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">xva_engine.core.cube.</span></span><span class="sig-name descname"><span class="pre">RiskFactorCube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenarios</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">factors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/core/cube.html#RiskFactorCube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.core.cube.RiskFactorCube" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Scenario cube for risk factor paths.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>numpy.ndarray</em>) – Array of shape <code class="docutils literal notranslate"><span class="pre">(n_scenarios,</span> <span class="pre">n_times,</span> <span class="pre">n_factors)</span></code> containing
+the simulated risk factor values.</p></li>
+<li><p><strong>scenarios</strong> (<em>list</em>) – Scenario identifiers. Typically integers <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">..</span> <span class="pre">n_scenarios-1</span></code>.</p></li>
+<li><p><strong>time_grid</strong> (<a class="reference internal" href="#xva_engine.core.time_grid.TimeGrid" title="xva_engine.core.time_grid.TimeGrid"><em>TimeGrid</em></a>) – Time grid corresponding to the second dimension of <code class="docutils literal notranslate"><span class="pre">data</span></code>.</p></li>
+<li><p><strong>factors</strong> (<em>list</em><em> of </em><em>str</em>) – Names or identifiers of each risk factor (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;EQ.SPX&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;IR.EUR.3M&quot;</span></code>).</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The <cite>RiskFactorCube</cite> is the main output of the simulation layer
+and the main input to the pricing layer.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="xva_engine.core.cube.RiskFactorCube.data">
+<span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#xva_engine.core.cube.RiskFactorCube.data" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="xva_engine.core.cube.RiskFactorCube.scenarios">
+<span class="sig-name descname"><span class="pre">scenarios</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#xva_engine.core.cube.RiskFactorCube.scenarios" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="xva_engine.core.cube.RiskFactorCube.time_grid">
+<span class="sig-name descname"><span class="pre">time_grid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#xva_engine.core.time_grid.TimeGrid" title="xva_engine.core.time_grid.TimeGrid"><span class="pre">TimeGrid</span></a></em><a class="headerlink" href="#xva_engine.core.cube.RiskFactorCube.time_grid" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="xva_engine.core.cube.RiskFactorCube.factors">
+<span class="sig-name descname"><span class="pre">factors</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#xva_engine.core.cube.RiskFactorCube.factors" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="xva_engine.core.cube.ExposureCube">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">xva_engine.core.cube.</span></span><span class="sig-name descname"><span class="pre">ExposureCube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenarios</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trades</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/core/cube.html#ExposureCube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.core.cube.ExposureCube" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Scenario cube for trade or portfolio values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>numpy.ndarray</em>) – Array of shape <code class="docutils literal notranslate"><span class="pre">(n_scenarios,</span> <span class="pre">n_times,</span> <span class="pre">n_trades)</span></code> containing
+the discounted value of each trade along each scenario and time.</p></li>
+<li><p><strong>scenarios</strong> (<em>list</em>) – Scenario identifiers.</p></li>
+<li><p><strong>time_grid</strong> (<a class="reference internal" href="#xva_engine.core.time_grid.TimeGrid" title="xva_engine.core.time_grid.TimeGrid"><em>TimeGrid</em></a>) – Time grid used for the valuation.</p></li>
+<li><p><strong>trades</strong> (<em>list</em><em> of </em><em>str</em>) – Trade identifiers, aligned with the last dimension of <code class="docutils literal notranslate"><span class="pre">data</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The <cite>ExposureCube</cite> is produced by the pricing layer and consumed
+by collateral, aggregation and XVA modules.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="xva_engine.core.cube.ExposureCube.data">
+<span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#xva_engine.core.cube.ExposureCube.data" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="xva_engine.core.cube.ExposureCube.scenarios">
+<span class="sig-name descname"><span class="pre">scenarios</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#xva_engine.core.cube.ExposureCube.scenarios" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="xva_engine.core.cube.ExposureCube.time_grid">
+<span class="sig-name descname"><span class="pre">time_grid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#xva_engine.core.time_grid.TimeGrid" title="xva_engine.core.time_grid.TimeGrid"><span class="pre">TimeGrid</span></a></em><a class="headerlink" href="#xva_engine.core.cube.ExposureCube.time_grid" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="xva_engine.core.cube.ExposureCube.trades">
+<span class="sig-name descname"><span class="pre">trades</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#xva_engine.core.cube.ExposureCube.trades" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-xva_engine.market_data.environment">
+<span id="market-data"></span><h2>Market Data<a class="headerlink" href="#module-xva_engine.market_data.environment" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="xva_engine.market_data.environment.MarketDataEnvironment">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">xva_engine.market_data.environment.</span></span><span class="sig-name descname"><span class="pre">MarketDataEnvironment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/market_data/environment.html#MarketDataEnvironment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.market_data.environment.MarketDataEnvironment" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Container for all market data needed by models and pricing:
+curves, vol surfaces, FX spots, spreads, etc.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.market_data.environment.MarketDataEnvironment.get_curve">
+<span class="sig-name descname"><span class="pre">get_curve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/market_data/environment.html#MarketDataEnvironment.get_curve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.market_data.environment.MarketDataEnvironment.get_curve" title="Link to this definition"></a></dt>
+<dd><p>Return a yield curve / discount curve identified by key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.market_data.environment.MarketDataEnvironment.get_vol_surface">
+<span class="sig-name descname"><span class="pre">get_vol_surface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/market_data/environment.html#MarketDataEnvironment.get_vol_surface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.market_data.environment.MarketDataEnvironment.get_vol_surface" title="Link to this definition"></a></dt>
+<dd><p>Return a volatility surface identified by key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.market_data.environment.MarketDataEnvironment.get_fx_spot">
+<span class="sig-name descname"><span class="pre">get_fx_spot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pair</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/market_data/environment.html#MarketDataEnvironment.get_fx_spot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.market_data.environment.MarketDataEnvironment.get_fx_spot" title="Link to this definition"></a></dt>
+<dd><p>Return FX spot for a currency pair.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.market_data.environment.MarketDataEnvironment.get_time_series">
+<span class="sig-name descname"><span class="pre">get_time_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/market_data/environment.html#MarketDataEnvironment.get_time_series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.market_data.environment.MarketDataEnvironment.get_time_series" title="Link to this definition"></a></dt>
+<dd><p>Return historical time series for a given identifier.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-xva_engine.market_data.sources.base">
+<dt class="sig sig-object py" id="xva_engine.market_data.sources.base.MarketDataSource">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">xva_engine.market_data.sources.base.</span></span><span class="sig-name descname"><span class="pre">MarketDataSource</span></span><a class="reference internal" href="_modules/xva_engine/market_data/sources/base.html#MarketDataSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.market_data.sources.base.MarketDataSource" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Abstract interface for all market data sources.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.market_data.sources.base.MarketDataSource.get_snapshot">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_snapshot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">as_of</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/market_data/sources/base.html#MarketDataSource.get_snapshot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.market_data.sources.base.MarketDataSource.get_snapshot" title="Link to this definition"></a></dt>
+<dd><p>Return a market data snapshot at a given date.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#xva_engine.market_data.environment.MarketDataEnvironment" title="xva_engine.market_data.environment.MarketDataEnvironment"><code class="xref py py-class docutils literal notranslate"><span class="pre">MarketDataEnvironment</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.market_data.sources.base.MarketDataSource.get_time_series">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_time_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">identifier</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/market_data/sources/base.html#MarketDataSource.get_time_series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.market_data.sources.base.MarketDataSource.get_time_series" title="Link to this definition"></a></dt>
+<dd><p>Return historical time series for an identifier.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-xva_engine.market_data.sources.dummy_source">
+<dt class="sig sig-object py" id="xva_engine.market_data.sources.dummy_source.DummySource">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">xva_engine.market_data.sources.dummy_source.</span></span><span class="sig-name descname"><span class="pre">DummySource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/market_data/sources/dummy_source.html#DummySource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.market_data.sources.dummy_source.DummySource" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#xva_engine.market_data.sources.base.MarketDataSource" title="xva_engine.market_data.sources.base.MarketDataSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">MarketDataSource</span></code></a></p>
+<p>Dummy market data source for testing and demos.</p>
+<dl class="simple">
+<dt>The snapshot returns a simple environment with:</dt><dd><ul class="simple">
+<li><p>flat risk-free rate</p></li>
+<li><p>equity spot and volatility</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>params</strong> (<em>dict</em>) – <p>Arbitrary dictionary controlling the dummy data, e.g.:</p>
+<dl class="simple">
+<dt>{</dt><dd><p>“spot”: 100.0,
+“rate”: 0.02,
+“sigma”: 0.20</p>
+</dd>
+</dl>
+<p>}</p>
+</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.market_data.sources.dummy_source.DummySource.get_snapshot">
+<span class="sig-name descname"><span class="pre">get_snapshot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">as_of</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/market_data/sources/dummy_source.html#DummySource.get_snapshot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.market_data.sources.dummy_source.DummySource.get_snapshot" title="Link to this definition"></a></dt>
+<dd><p>Return a market data snapshot at a given date.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#xva_engine.market_data.environment.MarketDataEnvironment" title="xva_engine.market_data.environment.MarketDataEnvironment"><code class="xref py py-class docutils literal notranslate"><span class="pre">MarketDataEnvironment</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.market_data.sources.dummy_source.DummySource.get_time_series">
+<span class="sig-name descname"><span class="pre">get_time_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">identifier</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/market_data/sources/dummy_source.html#DummySource.get_time_series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.market_data.sources.dummy_source.DummySource.get_time_series" title="Link to this definition"></a></dt>
+<dd><p>Return historical time series for an identifier.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-xva_engine.models.base">
+<span id="models-simulation"></span><h2>Models &amp; Simulation<a class="headerlink" href="#module-xva_engine.models.base" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="xva_engine.models.base.RiskFactorModel">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">xva_engine.models.base.</span></span><span class="sig-name descname"><span class="pre">RiskFactorModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/models/base.html#RiskFactorModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.models.base.RiskFactorModel" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Abstract base class for all risk factor models.</p>
+<p>Each concrete subclass implements the dynamics of a specific
+risk factor under a chosen measure (risk–neutral or historical).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Identifier for the model / risk factor (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;EQ.SPX&quot;</span></code>).</p></li>
+<li><p><strong>params</strong> (<em>dict</em>) – Model parameters (spot, drift, volatility, mean reversion, etc.).</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The contract of this class is intentionally minimal: calibration
+and path generation. Discretisation details (Euler, Milstein, …)
+can either be implemented inside the model or delegated to the
+simulation driver.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.models.base.RiskFactorModel.calibrate">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">calibrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calibrator</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/models/base.html#RiskFactorModel.calibrate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.models.base.RiskFactorModel.calibrate" title="Link to this definition"></a></dt>
+<dd><p>Calibrate model parameters to market or historical data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>env</strong> (<a class="reference internal" href="#xva_engine.market_data.environment.MarketDataEnvironment" title="xva_engine.market_data.environment.MarketDataEnvironment"><em>MarketDataEnvironment</em></a>) – Market data snapshot and/or time series.</p></li>
+<li><p><strong>calibrator</strong> (<em>Calibrator</em>) – Calibration strategy (historical vs implied).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.models.base.RiskFactorModel.simulate_paths">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">simulate_paths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_scenarios</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rng</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/models/base.html#RiskFactorModel.simulate_paths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.models.base.RiskFactorModel.simulate_paths" title="Link to this definition"></a></dt>
+<dd><p>Simulate model paths on a given time grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time_grid</strong> (<a class="reference internal" href="#xva_engine.core.time_grid.TimeGrid" title="xva_engine.core.time_grid.TimeGrid"><em>TimeGrid</em></a>) – Time grid for simulation.</p></li>
+<li><p><strong>n_scenarios</strong> (<em>int</em>) – Number of Monte Carlo scenarios.</p></li>
+<li><p><strong>rng</strong> (<em>numpy.random.Generator</em>) – Random number generator.</p></li>
+<li><p><strong>**kwargs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span>) – Optional implementation-specific arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Simulated paths as array of shape <code class="docutils literal notranslate"><span class="pre">(n_scenarios,</span> <span class="pre">n_times)</span></code> or
+<code class="docutils literal notranslate"><span class="pre">(n_scenarios,</span> <span class="pre">n_times,</span> <span class="pre">dim)</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-xva_engine.models.gbm_equity">
+<dt class="sig sig-object py" id="xva_engine.models.gbm_equity.GBMEquityModel">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">xva_engine.models.gbm_equity.</span></span><span class="sig-name descname"><span class="pre">GBMEquityModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/models/gbm_equity.html#GBMEquityModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.models.gbm_equity.GBMEquityModel" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#xva_engine.models.base.RiskFactorModel" title="xva_engine.models.base.RiskFactorModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">RiskFactorModel</span></code></a></p>
+<p>Geometric Brownian Motion (GBM) equity price model.</p>
+<p>Dynamics (under chosen measure):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dS_t</span> <span class="o">=</span> \<span class="n">mu</span> <span class="n">S_t</span> <span class="n">dt</span> <span class="o">+</span> \<span class="n">sigma</span> <span class="n">S_t</span> <span class="n">dW_t</span>
+</pre></div>
+</div>
+<p>with Euler discretisation on the log-price.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Risk factor identifier, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;EQ.SPX&quot;</span></code>.</p></li>
+<li><p><strong>params</strong> (<em>dict</em>) – <p>Must contain at least:
+<code class="docutils literal notranslate"><span class="pre">&quot;spot&quot;</span></code> : float</p>
+<blockquote>
+<div><p>Initial spot price.</p>
+</div></blockquote>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;mu&quot;</span></code><span class="classifier">float</span></dt><dd><p>Drift (under P or Q).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;sigma&quot;</span></code><span class="classifier">float</span></dt><dd><p>Volatility.</p>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.models.gbm_equity.GBMEquityModel.calibrate">
+<span class="sig-name descname"><span class="pre">calibrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calibrator</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/models/gbm_equity.html#GBMEquityModel.calibrate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.models.gbm_equity.GBMEquityModel.calibrate" title="Link to this definition"></a></dt>
+<dd><p>Delegate parameter estimation to the provided calibrator.</p>
+<p>For the demo slice this method is a no-op; the parameters are
+assumed to be set directly in <code class="docutils literal notranslate"><span class="pre">params</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.models.gbm_equity.GBMEquityModel.simulate_paths">
+<span class="sig-name descname"><span class="pre">simulate_paths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_scenarios</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rng</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/models/gbm_equity.html#GBMEquityModel.simulate_paths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.models.gbm_equity.GBMEquityModel.simulate_paths" title="Link to this definition"></a></dt>
+<dd><p>Simulate GBM equity paths using an Euler scheme on log S.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of shape <code class="docutils literal notranslate"><span class="pre">(n_scenarios,</span> <span class="pre">n_times)</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-xva_engine.simulation.driver">
+<dt class="sig sig-object py" id="xva_engine.simulation.driver.SimulationDriver">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">xva_engine.simulation.driver.</span></span><span class="sig-name descname"><span class="pre">SimulationDriver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/simulation/driver.html#SimulationDriver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.simulation.driver.SimulationDriver" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Orchestrates simulation of all risk factor models with correlation
+on a given time grid.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.simulation.driver.SimulationDriver.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">models</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corr_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">42</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/simulation/driver.html#SimulationDriver.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.simulation.driver.SimulationDriver.run" title="Link to this definition"></a></dt>
+<dd><p>Generate a RiskFactorCube according to the config and models.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#xva_engine.core.cube.RiskFactorCube" title="xva_engine.core.cube.RiskFactorCube"><code class="xref py py-class docutils literal notranslate"><span class="pre">RiskFactorCube</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-xva_engine.instruments.base">
+<span id="pricing-instruments"></span><h2>Pricing &amp; Instruments<a class="headerlink" href="#module-xva_engine.instruments.base" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="xva_engine.instruments.base.Instrument">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">xva_engine.instruments.base.</span></span><span class="sig-name descname"><span class="pre">Instrument</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/instruments/base.html#Instrument"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.instruments.base.Instrument" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Base class for all instruments.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="xva_engine.instruments.base.Instrument.id">
+<span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#xva_engine.instruments.base.Instrument.id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.instruments.base.Instrument.get_cashflows">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_cashflows</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/instruments/base.html#Instrument.get_cashflows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.instruments.base.Instrument.get_cashflows" title="Link to this definition"></a></dt>
+<dd><p>Return a representation of cashflows (to be defined).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-xva_engine.instruments.vanilla">
+<dt class="sig sig-object py" id="xva_engine.instruments.vanilla.EuropeanOption">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">xva_engine.instruments.vanilla.</span></span><span class="sig-name descname"><span class="pre">EuropeanOption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">underlying</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maturity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'call'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/instruments/vanilla.html#EuropeanOption"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.instruments.vanilla.EuropeanOption" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#xva_engine.instruments.base.Instrument" title="xva_engine.instruments.base.Instrument"><code class="xref py py-class docutils literal notranslate"><span class="pre">Instrument</span></code></a></p>
+<p>Plain-vanilla European option on a single underlying.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>) – Trade identifier.</p></li>
+<li><p><strong>underlying</strong> (<em>str</em>) – Name of the underlying risk factor (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;EQ.TEST&quot;</span></code>).</p></li>
+<li><p><strong>strike</strong> (<em>float</em>) – Strike price.</p></li>
+<li><p><strong>maturity</strong> (<em>float</em>) – Option maturity (year fraction from valuation date).</p></li>
+<li><p><strong>option_type</strong> (<em>str</em>) – Either <code class="docutils literal notranslate"><span class="pre">&quot;call&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;put&quot;</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="xva_engine.instruments.vanilla.EuropeanOption.underlying">
+<span class="sig-name descname"><span class="pre">underlying</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#xva_engine.instruments.vanilla.EuropeanOption.underlying" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="xva_engine.instruments.vanilla.EuropeanOption.strike">
+<span class="sig-name descname"><span class="pre">strike</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#xva_engine.instruments.vanilla.EuropeanOption.strike" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="xva_engine.instruments.vanilla.EuropeanOption.maturity">
+<span class="sig-name descname"><span class="pre">maturity</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#xva_engine.instruments.vanilla.EuropeanOption.maturity" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="xva_engine.instruments.vanilla.EuropeanOption.option_type">
+<span class="sig-name descname"><span class="pre">option_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'call'</span></em><a class="headerlink" href="#xva_engine.instruments.vanilla.EuropeanOption.option_type" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.instruments.vanilla.EuropeanOption.get_cashflows">
+<span class="sig-name descname"><span class="pre">get_cashflows</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/instruments/vanilla.html#EuropeanOption.get_cashflows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.instruments.vanilla.EuropeanOption.get_cashflows" title="Link to this definition"></a></dt>
+<dd><p>For a European option the payoff is a single maturity cashflow
+depending on the underlying terminal value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Placeholder representation of the payoff structure.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-xva_engine.pricing.context">
+<dt class="sig sig-object py" id="xva_engine.pricing.context.PricingContext">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">xva_engine.pricing.context.</span></span><span class="sig-name descname"><span class="pre">PricingContext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">market_env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valuation_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measure</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/pricing/context.html#PricingContext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.pricing.context.PricingContext" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Pricing context: market data + valuation settings.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="xva_engine.pricing.context.PricingContext.market_env">
+<span class="sig-name descname"><span class="pre">market_env</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#xva_engine.market_data.environment.MarketDataEnvironment" title="xva_engine.market_data.environment.MarketDataEnvironment"><span class="pre">MarketDataEnvironment</span></a></em><a class="headerlink" href="#xva_engine.pricing.context.PricingContext.market_env" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="xva_engine.pricing.context.PricingContext.valuation_date">
+<span class="sig-name descname"><span class="pre">valuation_date</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#xva_engine.pricing.context.PricingContext.valuation_date" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="xva_engine.pricing.context.PricingContext.measure">
+<span class="sig-name descname"><span class="pre">measure</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#xva_engine.pricing.context.PricingContext.measure" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-xva_engine.pricing.engines.base">
+<dt class="sig sig-object py" id="xva_engine.pricing.engines.base.PricingEngine">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">xva_engine.pricing.engines.base.</span></span><span class="sig-name descname"><span class="pre">PricingEngine</span></span><a class="reference internal" href="_modules/xva_engine/pricing/engines/base.html#PricingEngine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.pricing.engines.base.PricingEngine" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Base pricing engine interface.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.pricing.engines.base.PricingEngine.price">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">price</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inst</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/pricing/engines/base.html#PricingEngine.price"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.pricing.engines.base.PricingEngine.price" title="Link to this definition"></a></dt>
+<dd><p>Single-valuation pricing at t0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.pricing.engines.base.PricingEngine.price_paths">
+<span class="sig-name descname"><span class="pre">price_paths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inst</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cube</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/pricing/engines/base.html#PricingEngine.price_paths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.pricing.engines.base.PricingEngine.price_paths" title="Link to this definition"></a></dt>
+<dd><p>Optional: price along paths.
+Default: raise unless overridden.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-xva_engine.pricing.engines.path_mc">
+<dt class="sig sig-object py" id="xva_engine.pricing.engines.path_mc.PathwiseMCEngine">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">xva_engine.pricing.engines.path_mc.</span></span><span class="sig-name descname"><span class="pre">PathwiseMCEngine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">underlying_factor_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">risk_free_curve_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maturity_tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/pricing/engines/path_mc.html#PathwiseMCEngine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.pricing.engines.path_mc.PathwiseMCEngine" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#xva_engine.pricing.engines.base.PricingEngine" title="xva_engine.pricing.engines.base.PricingEngine"><code class="xref py py-class docutils literal notranslate"><span class="pre">PricingEngine</span></code></a></p>
+<p>Simple pathwise Monte Carlo engine for European options.</p>
+<p class="rubric">Notes</p>
+<p>This engine assumes that the <cite>RiskFactorCube</cite> contains the underlying
+price as one of the factors, and that the time grid includes the
+option maturity (or very close to it). Discounting is performed using
+a flat risk-free rate from the <cite>PricingContext</cite>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.pricing.engines.path_mc.PathwiseMCEngine.price">
+<span class="sig-name descname"><span class="pre">price</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inst</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/pricing/engines/path_mc.html#PathwiseMCEngine.price"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.pricing.engines.path_mc.PathwiseMCEngine.price" title="Link to this definition"></a></dt>
+<dd><p>Single-valuation pricing is not implemented here; use <cite>price_paths</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.pricing.engines.path_mc.PathwiseMCEngine.price_paths">
+<span class="sig-name descname"><span class="pre">price_paths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inst</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cube</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/pricing/engines/path_mc.html#PathwiseMCEngine.price_paths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.pricing.engines.path_mc.PathwiseMCEngine.price_paths" title="Link to this definition"></a></dt>
+<dd><p>Price a EuropeanOption along all scenarios and times in the cube.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inst</strong> (<a class="reference internal" href="#xva_engine.instruments.base.Instrument" title="xva_engine.instruments.base.Instrument"><em>Instrument</em></a>) – Must be a <cite>EuropeanOption</cite>.</p></li>
+<li><p><strong>cube</strong> (<a class="reference internal" href="#xva_engine.core.cube.RiskFactorCube" title="xva_engine.core.cube.RiskFactorCube"><em>RiskFactorCube</em></a>) – Simulated underlying paths.</p></li>
+<li><p><strong>ctx</strong> (<a class="reference internal" href="#xva_engine.pricing.context.PricingContext" title="xva_engine.pricing.context.PricingContext"><em>PricingContext</em></a>) – Provides risk-free rate via market environment.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Array of shape <code class="docutils literal notranslate"><span class="pre">(n_scenarios,</span> <span class="pre">n_times)</span></code> with discounted
+option value at each time. For this demo, the value is
+non-zero only at or after maturity.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-xva_engine.pricing.portfolio_pricer">
+<dt class="sig sig-object py" id="xva_engine.pricing.portfolio_pricer.PortfolioPricer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">xva_engine.pricing.portfolio_pricer.</span></span><span class="sig-name descname"><span class="pre">PortfolioPricer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/pricing/portfolio_pricer.html#PortfolioPricer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.pricing.portfolio_pricer.PortfolioPricer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Prices a portfolio on a risk factor cube using a given pricing engine.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.pricing.portfolio_pricer.PortfolioPricer.price_on_cube">
+<span class="sig-name descname"><span class="pre">price_on_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portfolio</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cube</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/pricing/portfolio_pricer.html#PortfolioPricer.price_on_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.pricing.portfolio_pricer.PortfolioPricer.price_on_cube" title="Link to this definition"></a></dt>
+<dd><p>For now: naive loop over trades and delegate to engine.price_paths().</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#xva_engine.core.cube.ExposureCube" title="xva_engine.core.cube.ExposureCube"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExposureCube</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-xva_engine.aggregation.exposure">
+<span id="aggregation-xva"></span><h2>Aggregation &amp; XVA<a class="headerlink" href="#module-xva_engine.aggregation.exposure" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="xva_engine.aggregation.exposure.ExposureMetrics">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">xva_engine.aggregation.exposure.</span></span><span class="sig-name descname"><span class="pre">ExposureMetrics</span></span><a class="reference internal" href="_modules/xva_engine/aggregation/exposure.html#ExposureMetrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.aggregation.exposure.ExposureMetrics" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Compute standard exposure metrics from an exposure cube.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.aggregation.exposure.ExposureMetrics.compute_EE">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compute_EE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cube</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/aggregation/exposure.html#ExposureMetrics.compute_EE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.aggregation.exposure.ExposureMetrics.compute_EE" title="Link to this definition"></a></dt>
+<dd><p>Expected Exposure as a function of time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.aggregation.exposure.ExposureMetrics.compute_EPE_ENE">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compute_EPE_ENE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cube</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/aggregation/exposure.html#ExposureMetrics.compute_EPE_ENE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.aggregation.exposure.ExposureMetrics.compute_EPE_ENE" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.aggregation.exposure.ExposureMetrics.compute_PFE">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compute_PFE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cube</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/aggregation/exposure.html#ExposureMetrics.compute_PFE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.aggregation.exposure.ExposureMetrics.compute_PFE" title="Link to this definition"></a></dt>
+<dd><p>Potential Future Exposure at quantile alpha as a function of time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.aggregation.exposure.ExposureMetrics.compute_EEPE">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compute_EEPE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cube</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/aggregation/exposure.html#ExposureMetrics.compute_EEPE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.aggregation.exposure.ExposureMetrics.compute_EEPE" title="Link to this definition"></a></dt>
+<dd><p>EEPE: time-average of EE.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-xva_engine.aggregation.xva">
+<dt class="sig sig-object py" id="xva_engine.aggregation.xva.XVAEngine">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">xva_engine.aggregation.xva.</span></span><span class="sig-name descname"><span class="pre">XVAEngine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xva_config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/aggregation/xva.html#XVAEngine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.aggregation.xva.XVAEngine" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Compute XVA metrics (CVA, DVA, FVA, MVA, CollVA) from exposure cube and
+credit/funding inputs.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="xva_engine.aggregation.xva.XVAEngine.compute_CVA">
+<span class="sig-name descname"><span class="pre">compute_CVA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cube</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pd_curve</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lgd</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xva_engine/aggregation/xva.html#XVAEngine.compute_CVA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.aggregation.xva.XVAEngine.compute_CVA" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="orchestration">
+<h2>Orchestration<a class="headerlink" href="#orchestration" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="validation/api/ir_arbitrage_free.html" class="btn btn-neutral float-left" title="IR Validation: Arbitrage-Free Diagnostics (Finding 1)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="source/api/modules.html" class="btn btn-neutral float-right" title="xva_engine" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Amine Badii.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

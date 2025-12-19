@@ -1,0 +1,40 @@
+\section{Appendix A — Theory background}
+\label{app:theory}
+
+\subsection{No-arbitrage relationships used in diagnostics}
+
+\paragraph{Discount factors and monotonicity.}
+Let $P(t,T)$ denote the discount factor at time $t$ for maturity $T$.
+In the absence of negative rates (or under standard admissibility conditions), discount factors
+are non-increasing in maturity:
+\[
+P(t,T_{k+1}) \le P(t,T_k) \quad \text{for } T_{k+1} > T_k.
+\]
+Equivalently, using zero rates $z(t,T)$ defined by $P(t,T)=\exp(-z(t,T)(T-t))$,
+monotonicity may be violated when simulated cross-maturity shapes become inconsistent.
+
+\paragraph{Forward-rate reconstruction identity.}
+For $0 \le t < T < T+u$, the forward discount factor satisfies
+\[
+P(t,T,T+u) := \frac{P(t,T+u)}{P(t,T)}.
+\]
+Under coherent term-structure dynamics, pricing identities ensure internal consistency of
+ratios across maturity intervals.
+
+\subsection{Pathwise vs marginal consistency}
+
+The model may be \emph{marginally consistent} by construction (each maturity pillar calibrated
+to variance targets), yet not \emph{pathwise consistent} across maturities because:
+\begin{itemize}[leftmargin=*]
+	\item the joint evolution across maturities is not derived from a single arbitrage-free
+	term-structure model;
+	\item correlations are imposed at driver level rather than induced by a coherent curve model;
+	\item no drift restriction enforces HJM-consistency.
+\end{itemize}
+
+\subsection{Benchmark rationale: Hull--White one-factor (HW1F)}
+
+HW1F provides a standard arbitrage-free reference with an explicit short-rate representation.
+In the benchmark, discount factors and forward ratios inherit consistency properties from the
+model’s term-structure construction (up to numerical error). Therefore, systematic deviations
+under the current model can be attributed to structural design rather than plotting or discretization.

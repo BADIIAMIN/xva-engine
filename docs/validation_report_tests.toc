@@ -1,0 +1,33 @@
+\contentsline {section}{\numberline {1}Finding 1: Absence of Pathwise Arbitrage-Free Term-Structure Dynamics}{2}{}%
+\contentsline {subsection}{\numberline {1.1}Finding Statement}{2}{}%
+\contentsline {subsection}{\numberline {1.2}Model Mechanics Leading to the Finding}{2}{}%
+\contentsline {subsubsection}{\numberline {1.2.1}Pillar-wise Stochastic Construction}{2}{}%
+\contentsline {subsubsection}{\numberline {1.2.2}Absence of Term-Structure Arbitrage Constraints}{2}{}%
+\contentsline {subsection}{\numberline {1.3}Theoretical Corroboration}{3}{}%
+\contentsline {subsubsection}{\numberline {1.3.1}Arbitrage-Free Requirement in Term-Structure Models}{3}{}%
+\contentsline {subsubsection}{\numberline {1.3.2}Why the Implemented Model Violates These Identities}{3}{}%
+\contentsline {subsection}{\numberline {1.4}Practical Implications for PFE}{3}{}%
+\contentsline {subsection}{\numberline {1.5}Validation Tests and Diagnostics}{3}{}%
+\contentsline {subsubsection}{\numberline {1.5.1}Test 1A: Static Discount-Factor Monotonicity}{3}{}%
+\contentsline {paragraph}{Objective}{3}{}%
+\contentsline {paragraph}{Definition}{4}{}%
+\contentsline {paragraph}{Implementation}{4}{}%
+\contentsline {paragraph}{Outputs}{4}{}%
+\contentsline {subsubsection}{\numberline {1.5.2}Test 1B: Forward-Rate Reconstruction Sanity}{4}{}%
+\contentsline {paragraph}{Objective}{4}{}%
+\contentsline {paragraph}{Definition}{4}{}%
+\contentsline {paragraph}{Diagnostics}{4}{}%
+\contentsline {subsubsection}{\numberline {1.5.3}Test 1C: Pathwise Discount-Factor Multiplicative Identity}{4}{}%
+\contentsline {paragraph}{Objective}{4}{}%
+\contentsline {paragraph}{Definition}{4}{}%
+\contentsline {paragraph}{Implementation}{4}{}%
+\contentsline {paragraph}{Outputs}{5}{}%
+\contentsline {subsection}{\numberline {1.6}Illustrations}{5}{}%
+\contentsline {subsection}{\numberline {1.7}Conclusion}{5}{}%
+\contentsline {subsection}{\numberline {1.8}Finding 1-Illustration --- Absence of Pathwise Arbitrage-Free Term-Structure Dynamics}{5}{}%
+\contentsline {subsubsection}{\numberline {1.8.1}Definition of the kink index (cross-tenor smoothness diagnostic)}{5}{}%
+\contentsline {subsubsection}{\numberline {1.8.2}Static discount-factor monotonicity}{6}{}%
+\contentsline {subsubsection}{\numberline {1.8.3}Cross-tenor smoothness and kink diagnostics}{8}{}%
+\contentsline {subsubsection}{\numberline {1.8.4}Pathwise discount-factor multiplicative consistency}{10}{}%
+\contentsline {subsubsection}{\numberline {1.8.5}Wedge severity as a function of maturity}{12}{}%
+\contentsline {subsubsection}{\numberline {1.8.6}Conclusion}{13}{}%

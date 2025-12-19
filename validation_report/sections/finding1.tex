@@ -1,0 +1,116 @@
+\section{Finding 1 — Absence of Pathwise Arbitrage-Free Term-Structure Dynamics}
+\label{sec:finding1}
+
+\subsection{Finding statement}
+The IR simulation model does not enforce arbitrage-free term-structure relationships
+along individual simulation paths. Zero rates at each maturity pillar are simulated
+independently, with cross-tenor dependence introduced solely through correlations
+between latent stochastic drivers. As a result, static and dynamic no-arbitrage
+identities governing discount factors and forward-rate reconstruction may be violated
+along individual paths, particularly at long horizons and under elevated volatility
+conditions.
+
+\subsection{Model features giving rise to the finding}
+The finding arises directly from the structural design of the model:
+\begin{itemize}[leftmargin=*]
+	\item Each maturity pillar is driven by a dedicated stochastic process calibrated
+	independently to market-implied variance targets.
+	\item Cross-tenor dependence is introduced via correlations between drivers rather
+	than through a unified term-structure factor model.
+	\item No short-rate representation or arbitrage-free drift restriction (e.g.\ HJM
+	consistency) is imposed.
+\end{itemize}
+
+While this construction ensures marginal calibration accuracy at each tenor, it does
+not guarantee global coherence of the simulated yield curve along individual paths.
+
+\subsection{Risk implications for PFE}
+The absence of arbitrage-free dynamics may lead to:
+\begin{itemize}[leftmargin=*]
+	\item Violations of static discount-factor monotonicity across maturities.
+	\item Reduced cross-tenor smoothness, resulting in locally implausible curve shapes.
+	\item Inconsistencies in discount-factor reconstruction over time, which may
+	accumulate with maturity and affect long-dated exposure profiles.
+\end{itemize}
+These effects are expected to be more pronounced for long-horizon PFE metrics and
+portfolios with significant sensitivity to the shape of the yield curve.
+
+\subsection{Validation strategy and diagnostics}
+Three complementary diagnostics are implemented:
+\begin{enumerate}[leftmargin=*]
+	\item \textbf{Static discount-factor monotonicity} across maturities.
+	\item \textbf{Cross-tenor smoothness} using a kink index (local curvature proxy).
+	\item \textbf{Pathwise discount-factor multiplicative consistency} via a wedge metric.
+\end{enumerate}
+All diagnostics are benchmarked against an arbitrage-free Hull--White one-factor (HW1F)
+model. Together, these diagnostics provide complementary coverage of static,
+cross-sectional, and dynamic arbitrage constraints.
+
+\subsection{Empirical evidence and plots}
+
+\paragraph{Discount-factor monotonicity violations.}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\textwidth]{current_df_monotonicity_heatmap.png}
+	\caption{Current model: frequency of discount-factor monotonicity violations across time and pillar intervals.}
+	\label{fig:finding1_df_monotonicity_current}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\textwidth]{hw_df_monotonicity_heatmap.png}
+	\caption{HW1F benchmark: frequency of discount-factor monotonicity violations across time and pillar intervals.}
+	\label{fig:finding1_df_monotonicity_hw}
+\end{figure}
+
+\paragraph{Kink index bands (cross-tenor smoothness).}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\textwidth]{current_kink_bands.png}
+	\caption{Current model: kink index bands over time (median and dispersion band).}
+	\label{fig:finding1_kink_bands_current}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\textwidth]{hw_kink_bands.png}
+	\caption{HW1F benchmark: kink index bands over time (median and dispersion band).}
+	\label{fig:finding1_kink_bands_hw}
+\end{figure}
+
+\paragraph{Discount-factor wedge (multiplicative consistency).}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\textwidth]{current_wedge_hist.png}
+	\caption{Current model: wedge histogram for a representative $(T,u)$ pair.}
+	\label{fig:finding1_wedge_hist_current}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\textwidth]{hw_wedge_hist.png}
+	\caption{HW1F benchmark: wedge histogram for a representative $(T,u)$ pair.}
+	\label{fig:finding1_wedge_hist_hw}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\textwidth]{current_wedge_vs_maturity.png}
+	\caption{Current model: $p95(|\mathrm{wedge}|)$ vs maturity.}
+	\label{fig:finding1_wedge_vs_maturity_current}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\textwidth]{hw_wedge_vs_maturity.png}
+	\caption{HW1F benchmark: $p95(|\mathrm{wedge}|)$ vs maturity.}
+	\label{fig:finding1_wedge_vs_maturity_hw}
+\end{figure}
+
+\subsection{Conclusion}
+The diagnostics demonstrate that the IR simulation model does not enforce pathwise
+arbitrage-free term-structure dynamics. Violations are systematic and maturity-dependent,
+and are materially larger than those observed under an arbitrage-free benchmark.
+This behaviour is a structural consequence of the model design and must be monitored,
+benchmarked, and appropriately controlled when assessing long-horizon PFE metrics,
+particularly for long-dated exposure profiles.

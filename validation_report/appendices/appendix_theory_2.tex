@@ -1,0 +1,13 @@
+\subsection{Interpolation and discretisation: theoretical considerations}
+A continuous yield curve is approximated in practice by values at a finite set of maturity pillars
+$\{T_k\}_{k=0}^{K}$. Any valuation requiring intermediate maturities $T \notin \{T_k\}$ necessarily
+introduces an interpolation operator $\mathcal{I}$ such that:
+\[
+\tilde z(t,T) = \mathcal{I}\big(\{(T_k, z(t,T_k))\}_{k=0}^{K}\big)(T).
+\]
+This operator imposes additional structure beyond the stochastic model specification. Different
+interpolation choices correspond to different assumptions about local behaviour of discount factors,
+zero rates, and implied forward rates. In general, interpolation is not arbitrage-neutral unless it is
+consistent with an arbitrage-free term-structure model (e.g.\ constructed from a short-rate or HJM
+specification). Consequently, discretisation and interpolation can induce artefacts such as:
+(i) local curvature spikes (kinks), (ii) oscillatory implied forwards, and (iii) grid-dependent valuations.

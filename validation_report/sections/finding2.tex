@@ -1,0 +1,58 @@
+\section{Finding 2 — Pillar Discretisation and Interpolation Artefacts}
+\label{sec:finding2}
+
+\subsection{Finding statement}
+
+The IR simulation model represents the yield curve on a finite set of maturity
+pillars and relies on numerical interpolation to construct continuous curves.
+This design introduces structural artefacts that may affect local curve smoothness,
+implied forward rates, and exposure profiles. Model outputs may therefore exhibit
+sensitivity to interpolation choices and maturity grid specification.
+
+\subsection{Model features giving rise to the finding}
+
+The finding arises from the following structural features:
+\begin{itemize}
+	\item Zero rates are simulated only at a discrete set of maturity pillars.
+	\item Pricing and discounting require curve values at non-pillar maturities.
+	\item Interpolation schemes are applied ex post and are not model-consistent.
+\end{itemize}
+
+As a result, numerical artefacts may be introduced independently of the underlying
+stochastic dynamics.
+
+\subsection{Risk implications for PFE}
+
+Interpolation-induced artefacts may lead to:
+\begin{itemize}
+	\item Artificial oscillations in implied forward rates.
+	\item Localised distortions of discount factors at intermediate maturities.
+	\item Sensitivity of exposure profiles to curve discretisation choices.
+\end{itemize}
+
+These effects are particularly relevant for products sensitive to forward rates
+or convexity, and for long-dated exposures.
+
+\subsection{Validation strategy and diagnostics}
+
+Three diagnostics are implemented to substantiate this finding:
+\begin{enumerate}
+	\item Interpolation sensitivity across numerical schemes.
+	\item Roughness of implied forward-rate curves.
+	\item Stability under changes in maturity pillar density.
+\end{enumerate}
+
+\subsection{Empirical evidence}
+
+[Figures to be inserted here:
+interpolation differences,
+forward roughness plots,
+pillar density comparison plots.]
+
+\subsection{Conclusion}
+
+The diagnostics demonstrate that the discrete pillar representation combined with
+numerical interpolation introduces structural artefacts in the simulated term
+structures. These artefacts are model-design driven and may materially affect
+exposure calculations. Appropriate controls, monitoring, and sensitivity analyses
+are therefore required.

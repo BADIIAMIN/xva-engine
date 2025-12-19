@@ -1,0 +1,33 @@
+\subsection{Finding 2 — Implementation mapping}
+The diagnostics are implemented under:
+\begin{itemize}
+	\item \texttt{xva\_engine/validation/ir/interpolation/test\_interpolation\_sensitivity.py}
+	\item \texttt{xva\_engine/validation/ir/interpolation/test\_forward\_roughness.py}
+	\item \texttt{xva\_engine/validation/ir/interpolation/test\_pillar\_density.py}
+	\item \texttt{xva\_engine/validation/ir/interpolation/reporting/plots\_interpolation.py}
+\end{itemize}
+
+\subsection{Interpolation sensitivity (T2.1): pseudo-code}
+\begin{verbatim}
+	grid = dense_maturity_grid(pillars)
+	z1 = interpolate(pillars, z_pillars, scheme="linear_zero", grid=grid)
+	z2 = interpolate(pillars, z_pillars, scheme="linear_logdf", grid=grid)
+	diff = z1 - z2
+	RMS(t) = sqrt(mean_T(diff^2))
+	Max(t) = max_T(|diff|)
+\end{verbatim}
+
+\subsection{Forward roughness (T2.2): pseudo-code}
+\begin{verbatim}
+	f(T) = d/dT [T z(T)]  (finite differences on dense grid)
+	roughness = integral |d^2 f / dT^2| dT
+\end{verbatim}
+
+\subsection{Pillar density stress (T2.3): pseudo-code}
+\begin{verbatim}
+	coarse_pillars = pillars[::2] (+ ensure last pillar)
+	z_full  = interpolate(full_pillars, z_pillars, scheme, dense_grid)
+	z_coarse = interpolate(coarse_pillars, z_pillars_coarse, scheme, dense_grid)
+	diff = z_coarse - z_full
+	report RMS and Max of diff
+\end{verbatim}

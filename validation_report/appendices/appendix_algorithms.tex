@@ -1,0 +1,81 @@
+\section{Appendix C — Algorithmic implementation and benchmark model}
+\label{app:algorithms}
+
+\subsection{Hull--White one-factor (HW1F) model}
+
+The Hull--White one-factor model specifies the short rate as:
+\[
+r(t) = x(t) + \phi(t),
+\]
+where $x(t)$ follows an Ornstein--Uhlenbeck process:
+\[
+dx(t) = -a\,x(t)\,dt + \sigma\,dW_t.
+\]
+
+The deterministic shift $\phi(t)$ is chosen to fit the initial term structure exactly.
+
+\subsubsection{Zero-coupon bond prices}
+
+Under HW1F, the zero-coupon bond price admits the closed form:
+\[
+P(t,T)
+=
+A(t,T)\exp\!\left(-B(t,T)\,r(t)\right),
+\]
+with:
+\[
+B(t,T) = \frac{1 - e^{-a(T-t)}}{a},
+\]
+and $A(t,T)$ determined to match the initial yield curve.
+
+\subsubsection{Calibration}
+
+Model parameters $(a,\sigma)$ are calibrated by minimizing the discrepancy between
+model-implied and market-observed swaption volatilities:
+\[
+\min_{a,\sigma}
+\sum_{i}
+\left(
+\sigma_{\text{model}}^{\text{swaption}}(i)
+-
+\sigma_{\text{market}}^{\text{swaption}}(i)
+\right)^2.
+\]
+
+HW1F is arbitrage-free by construction and therefore serves as a suitable benchmark
+for structural diagnostics.
+
+\subsection{Algorithmic computation of diagnostics}
+
+\subsubsection{DF monotonicity heatmap}
+
+For each simulation time and maturity interval:
+\begin{verbatim}
+	for time i:
+	for maturity k:
+	violations = mean(DF[:,i,k+1] > DF[:,i,k])
+\end{verbatim}
+
+\subsubsection{Kink index bands}
+
+\begin{verbatim}
+	for time i:
+	for path n:
+	kink[n] = sum_k |Z[n,i,k+1] - 2 Z[n,i,k] + Z[n,i,k-1]|
+	compute median and quantiles of kink
+\end{verbatim}
+
+\subsubsection{Wedge statistics}
+
+\begin{verbatim}
+	for maturity T:
+	for path n:
+	wedge = log(P(T+u)) - log(P(T)) - log(P_hat(T,T+u))
+	compute histogram and p95(|wedge|)
+\end{verbatim}
+
+\subsection{Reproducibility and governance considerations}
+
+All diagnostics are computed under fixed random seeds and deterministic
+configuration files. Output artefacts are versioned by model configuration,
+ensuring traceability between reported figures and underlying simulations.

@@ -1,0 +1,249 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IR Ultimate Base Curve Model &mdash; XVA / CCR / PFE Engine  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Troubleshooting" href="troubleshooting.html" />
+    <link rel="prev" title="Conventions" href="conventions.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            XVA / CCR / PFE Engine
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture &amp; Design View</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation_models.html">Simulation Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/api/modules.html">xva_engine</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">XVA / CCR / PFE Engine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../simulation_models.html">Simulation Models</a></li>
+      <li class="breadcrumb-item active">IR Ultimate Base Curve Model</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/simulation_models/ir_ultimate_base_curve.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ir-ultimate-base-curve-model">
+<h1>IR Ultimate Base Curve Model<a class="headerlink" href="#ir-ultimate-base-curve-model" title="Link to this heading"></a></h1>
+<section id="module-coverage">
+<h2>Module coverage<a class="headerlink" href="#module-coverage" title="Link to this heading"></a></h2>
+<p>The following modules are implemented for interest-rate trajectory simulation:</p>
+<ul class="simple">
+<li><p>Generator (engine-facing):
+<code class="docutils literal notranslate"><span class="pre">xva_engine.simulation.generators.ir_ultimate_base_curve_generator</span></code></p></li>
+<li><p>IR risk-factor process (mathematics):
+<code class="docutils literal notranslate"><span class="pre">xva_engine.simulation.risk_factors.ir.ultimate_base_curve_process</span></code></p></li>
+<li><p>Deterministic mean function builder:
+<code class="docutils literal notranslate"><span class="pre">xva_engine.simulation.risk_factors.ir.mean_function</span></code></p></li>
+<li><p>Historical calibration utilities:
+<code class="docutils literal notranslate"><span class="pre">xva_engine.simulation.risk_factors.ir.calibration_historical</span></code></p></li>
+<li><p>Calibration orchestration (if used):
+<code class="docutils literal notranslate"><span class="pre">xva_engine.simulation.risk_factors.ir.calibrators</span></code></p></li>
+</ul>
+</section>
+<section id="purpose-and-scope">
+<h2>Purpose and scope<a class="headerlink" href="#purpose-and-scope" title="Link to this heading"></a></h2>
+<p>This model generates Monte Carlo trajectories for the <em>ultimate base interest-rate curve</em>
+represented as continuous zero rates at fixed maturity pillars.</p>
+<p>The design goal is to provide:
+- deterministic mean consistency with the initial discount curve,
+- per-pillar stochastic dynamics with cross-pillar correlation,
+- a clean separation between process mathematics and scenario generation.</p>
+</section>
+<section id="architecture-placement">
+<h2>Architecture placement<a class="headerlink" href="#architecture-placement" title="Link to this heading"></a></h2>
+<p>This is a trajectory model and belongs under <code class="docutils literal notranslate"><span class="pre">xva_engine/simulation</span></code> (not under
+<code class="docutils literal notranslate"><span class="pre">xva_engine/market_data/simulators</span></code>).</p>
+</section>
+<section id="model-definition">
+<h2>Model definition<a class="headerlink" href="#model-definition" title="Link to this heading"></a></h2>
+<section id="pillars">
+<h3>Pillars<a class="headerlink" href="#pillars" title="Link to this heading"></a></h3>
+<p>Let <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">1..K</span></code> index curve maturity pillars. Pillars are stored as <code class="docutils literal notranslate"><span class="pre">M_k</span></code> (in days)
+and converted to year fractions <code class="docutils literal notranslate"><span class="pre">m_k</span> <span class="pre">=</span> <span class="pre">M_k</span> <span class="pre">/</span> <span class="pre">365</span></code>.</p>
+</section>
+<section id="ou-drivers-per-pillar">
+<h3>OU drivers (per pillar)<a class="headerlink" href="#ou-drivers-per-pillar" title="Link to this heading"></a></h3>
+<p>For each pillar <code class="docutils literal notranslate"><span class="pre">k</span></code> define an OU driver:</p>
+<div class="math notranslate nohighlight">
+\[dX_k(t) = -\lambda_k X_k(t)\,dt + \sigma_k\,dW_k(t),
+\qquad X_k(0)=0.\]</div>
+</section>
+<section id="cross-pillar-correlation">
+<h3>Cross-pillar correlation<a class="headerlink" href="#cross-pillar-correlation" title="Link to this heading"></a></h3>
+<p>Brownian motions are correlated across pillars:</p>
+<div class="math notranslate nohighlight">
+\[dW_i(t)\,dW_j(t) = \rho_{ij}\,dt.\]</div>
+<p>In implementation, a Cholesky factor <code class="docutils literal notranslate"><span class="pre">L</span></code> of <code class="docutils literal notranslate"><span class="pre">rho</span></code> is used to correlate
+standard normal increments.</p>
+</section>
+<section id="deterministic-mean-function-forward-forward">
+<h3>Deterministic mean function (forward-forward)<a class="headerlink" href="#deterministic-mean-function-forward-forward" title="Link to this heading"></a></h3>
+<p>A deterministic mean function <code class="docutils literal notranslate"><span class="pre">g_k(t)</span></code> is built from the initial discount curve <code class="docutils literal notranslate"><span class="pre">DF(0,t)</span></code>
+using a forward-forward rate:</p>
+<div class="math notranslate nohighlight">
+\[f_k(t) = -\frac{1}{m_k}\ln\left(\frac{DF(0,t+m_k)}{DF(0,t)}\right),
+\qquad g_k(t) = \max(f_k(t), \delta).\]</div>
+</section>
+<section id="shifted-exponential-transform">
+<h3>Shifted exponential transform<a class="headerlink" href="#shifted-exponential-transform" title="Link to this heading"></a></h3>
+<p>The simulated zero rate is obtained via:</p>
+<div class="math notranslate nohighlight">
+\[Y_k(t) = (g_k(t) + s_k)\exp\left(X_k(t) - \tfrac12 v_k^2(t)\right) - s_k,\]</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">s_k</span></code> is a per-pillar shift (in rate units) and:</p>
+<div class="math notranslate nohighlight">
+\[v_k^2(t) = \mathrm{Var}[X_k(t)]
+        = \sigma_k^2 \frac{1-e^{-2\lambda_k t}}{2\lambda_k}.\]</div>
+<p>This ensures mean consistency:</p>
+<div class="math notranslate nohighlight">
+\[\mathbb{E}[Y_k(t)] = g_k(t).\]</div>
+</section>
+</section>
+<section id="discretization-exact-ou">
+<h2>Discretization (exact OU)<a class="headerlink" href="#discretization-exact-ou" title="Link to this heading"></a></h2>
+<p>The OU drivers are evolved using the exact discretization over a time step <code class="docutils literal notranslate"><span class="pre">Δt</span></code>:</p>
+<div class="math notranslate nohighlight">
+\[X_k(t+\Delta t) = e^{-\lambda_k\Delta t}X_k(t)
++ \sqrt{ \sigma_k^2 \frac{1-e^{-2\lambda_k\Delta t}}{2\lambda_k} }\,Z_k,\]</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">Z</span></code> is a correlated standard normal vector.</p>
+</section>
+<section id="calibration-implemented-to-date">
+<h2>Calibration (implemented to date)<a class="headerlink" href="#calibration-implemented-to-date" title="Link to this heading"></a></h2>
+<p>A minimal historical calibration is implemented to estimate:</p>
+<ul class="simple">
+<li><p>cross-pillar correlation matrix <code class="docutils literal notranslate"><span class="pre">rho</span></code> from shifted log-returns,</p></li>
+<li><p>per-pillar volatility <code class="docutils literal notranslate"><span class="pre">sigma_k</span></code> from shifted log-return variance,</p></li>
+<li><p>mean reversion <code class="docutils literal notranslate"><span class="pre">lambda_k</span></code> is currently taken as configured (scalar expanded across pillars),</p></li>
+<li><p>shift <code class="docutils literal notranslate"><span class="pre">s_k</span></code> is currently configured (scalar or per pillar).</p></li>
+</ul>
+<section id="shifted-log-returns-horizon-h-days">
+<h3>Shifted log-returns (horizon h days)<a class="headerlink" href="#shifted-log-returns-horizon-h-days" title="Link to this heading"></a></h3>
+<p>With a shift <code class="docutils literal notranslate"><span class="pre">s</span></code> ensuring positivity:</p>
+<div class="math notranslate nohighlight">
+\[r_k(t) = \ln\left(\frac{Y_k(t+h)+s}{Y_k(t)+s}\right).\]</div>
+<p>Empirical correlation of <code class="docutils literal notranslate"><span class="pre">r_k</span></code> provides <code class="docutils literal notranslate"><span class="pre">rho</span></code> and variance provides a mapping to <code class="docutils literal notranslate"><span class="pre">sigma_k</span></code>.</p>
+</section>
+</section>
+<section id="scenario-generation-workflow">
+<h2>Scenario generation workflow<a class="headerlink" href="#scenario-generation-workflow" title="Link to this heading"></a></h2>
+<p>End-to-end scenario generation proceeds as:</p>
+<ol class="arabic simple">
+<li><p>Build deterministic mean function <code class="docutils literal notranslate"><span class="pre">g(t,k)</span></code> from <code class="docutils literal notranslate"><span class="pre">DF(0,t)</span></code>.</p></li>
+<li><p>Obtain parameters <code class="docutils literal notranslate"><span class="pre">(rho,</span> <span class="pre">sigma_k,</span> <span class="pre">lambda_k,</span> <span class="pre">s_k)</span></code> from calibration/config.</p></li>
+<li><p>Simulate OU drivers <code class="docutils literal notranslate"><span class="pre">X(t,k)</span></code> with correlated increments.</p></li>
+<li><p>Transform to zero rates <code class="docutils literal notranslate"><span class="pre">Y(t,k)</span></code> via shifted exponential mapping.</p></li>
+<li><p>Output scenarios as cube <code class="docutils literal notranslate"><span class="pre">rates[path,</span> <span class="pre">time,</span> <span class="pre">pillar]</span></code>.</p></li>
+</ol>
+</section>
+<section id="outputs">
+<h2>Outputs<a class="headerlink" href="#outputs" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rates</span></code>: NumPy array with shape <code class="docutils literal notranslate"><span class="pre">(n_paths,</span> <span class="pre">n_times,</span> <span class="pre">n_pillars)</span></code></p></li>
+<li><p>optional <code class="docutils literal notranslate"><span class="pre">driver</span></code> (if enabled): same shape, holding <code class="docutils literal notranslate"><span class="pre">X</span></code> for diagnostics.</p></li>
+</ul>
+</section>
+<section id="recommended-validation-checks">
+<h2>Recommended validation checks<a class="headerlink" href="#recommended-validation-checks" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Mean consistency: verify empirical mean across paths satisfies
+<code class="docutils literal notranslate"><span class="pre">avg_paths(Y_k(t))</span> <span class="pre">≈</span> <span class="pre">g_k(t)</span></code>.</p></li>
+<li><p>Positivity under shift: <code class="docutils literal notranslate"><span class="pre">Y_k(t)</span> <span class="pre">+</span> <span class="pre">s_k</span> <span class="pre">&gt;</span> <span class="pre">0</span></code> for all <code class="docutils literal notranslate"><span class="pre">t</span></code> and <code class="docutils literal notranslate"><span class="pre">k</span></code> (required if using log-returns).</p></li>
+<li><p>SPD correlation: verify Cholesky of <code class="docutils literal notranslate"><span class="pre">rho</span></code> succeeds (or apply SPD repair).</p></li>
+<li><p>Long-horizon variance diagnostic: compare achieved variance of rates versus target implied by parameters.</p></li>
+</ul>
+</section>
+<section id="planned-enhancements">
+<h2>Planned enhancements<a class="headerlink" href="#planned-enhancements" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Full shift selection algorithm (per your model documentation) enforcing stability/positivity conditions.</p></li>
+<li><p>Market-implied calibration to swaption vol targets.</p></li>
+<li><p>Benchmarking models (e.g. Hull-White 1F, PCA/Gaussian term-structure model).</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="conventions.html" class="btn btn-neutral float-left" title="Conventions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="troubleshooting.html" class="btn btn-neutral float-right" title="Troubleshooting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Amine Badii.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

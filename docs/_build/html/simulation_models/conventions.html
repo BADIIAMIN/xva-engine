@@ -1,0 +1,161 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conventions &mdash; XVA / CCR / PFE Engine  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="IR Ultimate Base Curve Model" href="ir_ultimate_base_curve.html" />
+    <link rel="prev" title="Simulation Models" href="../simulation_models.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            XVA / CCR / PFE Engine
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture &amp; Design View</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation_models.html">Simulation Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../source/api/modules.html">xva_engine</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">XVA / CCR / PFE Engine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../simulation_models.html">Simulation Models</a></li>
+      <li class="breadcrumb-item active">Conventions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/simulation_models/conventions.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="conventions">
+<h1>Conventions<a class="headerlink" href="#conventions" title="Link to this heading"></a></h1>
+<section id="repository-structure-simulation-layer">
+<h2>Repository structure (simulation layer)<a class="headerlink" href="#repository-structure-simulation-layer" title="Link to this heading"></a></h2>
+<p>The simulation layer is organized as follows:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">xva_engine/simulation/driver.py</span></code>:
+orchestration and driving logic (time grids, scenario runs, calling generators).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">xva_engine/simulation/schemes.py</span></code>:
+numerical schemes / stepping utilities used by processes.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">xva_engine/simulation/generators</span></code>:
+scenario generators (engine-facing wrappers producing scenario cubes).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">xva_engine/simulation/risk_factors</span></code>:
+mathematical processes and calibration components, by asset class.</p></li>
+</ul>
+</section>
+<section id="time-representation">
+<h2>Time representation<a class="headerlink" href="#time-representation" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Simulation time is expressed in <em>year fractions</em> (typically ACT/365).</p></li>
+<li><p>Curve pillars are stored in <em>days</em> and converted to years when needed.</p></li>
+</ul>
+</section>
+<section id="units">
+<h2>Units<a class="headerlink" href="#units" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Rates are in <em>rate units</em> (not basis points).</p></li>
+<li><p>Basis points conversion: <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">bp</span> <span class="pre">=</span> <span class="pre">1e-4</span></code>.</p></li>
+</ul>
+</section>
+<section id="scenario-cube-layout">
+<h2>Scenario cube layout<a class="headerlink" href="#scenario-cube-layout" title="Link to this heading"></a></h2>
+<p>Scenario cubes are produced as NumPy arrays with shape:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rates[path_index,</span> <span class="pre">time_index,</span> <span class="pre">pillar_index]</span></code></p></li>
+</ul>
+</section>
+<section id="correlation">
+<h2>Correlation<a class="headerlink" href="#correlation" title="Link to this heading"></a></h2>
+<p>Cross-pillar dependency is represented by a correlation matrix <code class="docutils literal notranslate"><span class="pre">corr</span></code>.
+Correlated standard normals are generated using Cholesky factorization.</p>
+</section>
+<section id="responsibilities">
+<h2>Responsibilities<a class="headerlink" href="#responsibilities" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><em>Risk-factor processes</em> implement state evolution and transformations.</p></li>
+<li><p><em>Generators</em> combine deterministic mean functions, calibrated parameters,
+and the process to produce scenario cubes consumable by the engine.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../simulation_models.html" class="btn btn-neutral float-left" title="Simulation Models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ir_ultimate_base_curve.html" class="btn btn-neutral float-right" title="IR Ultimate Base Curve Model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Amine Badii.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,249 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finding 1: Absence of Pathwise Arbitrage-Free Term-Structure Dynamics &mdash; XVA / CCR / PFE Engine  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Validation API" href="../api/index.html" />
+    <link rel="prev" title="Validation Findings" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            XVA / CCR / PFE Engine
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture &amp; Design View</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulation_models/index.html">Simulation Models</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Validation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Validation Findings</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Finding 1: Absence of Pathwise Arbitrage-Free Term-Structure Dynamics</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#finding-statement">Finding statement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#model-mechanics-leading-to-the-finding">Model mechanics leading to the finding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#theory-corroboration">Theory corroboration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#practical-implications-for-pfe">Practical implications for PFE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#validation-tests-and-diagnostics">Validation tests and diagnostics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#illustrations">Illustrations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-run">How to run</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">Validation API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/api/modules.html">xva_engine</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">XVA / CCR / PFE Engine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Validation</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Validation Findings</a></li>
+      <li class="breadcrumb-item active">Finding 1: Absence of Pathwise Arbitrage-Free Term-Structure Dynamics</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/validation/findings/finding_01_arbitrage_free.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="finding-1-absence-of-pathwise-arbitrage-free-term-structure-dynamics">
+<h1>Finding 1: Absence of Pathwise Arbitrage-Free Term-Structure Dynamics<a class="headerlink" href="#finding-1-absence-of-pathwise-arbitrage-free-term-structure-dynamics" title="Link to this heading"></a></h1>
+<section id="finding-statement">
+<h2>Finding statement<a class="headerlink" href="#finding-statement" title="Link to this heading"></a></h2>
+<p>The Interest Rate (IR) simulation model does <strong>not enforce pathwise arbitrage-free</strong>
+relationships across maturities. Each zero-rate maturity pillar is simulated as a
+distinct stochastic process, with cross-tenor dependence introduced exclusively via
+correlation between latent drivers.</p>
+<p>As a result, discount-factor multiplicative identities and forward-rate reconstruction
+conditions are not guaranteed to hold along individual Monte Carlo paths, particularly
+at long horizons or under elevated volatility regimes.</p>
+<p>This limitation may lead to economically implausible curve shapes and dynamic
+inconsistencies in simulated interest-rate term structures.</p>
+</section>
+<section id="model-mechanics-leading-to-the-finding">
+<h2>Model mechanics leading to the finding<a class="headerlink" href="#model-mechanics-leading-to-the-finding" title="Link to this heading"></a></h2>
+<p>In the implemented framework, each maturity pillar is simulated through a shifted
+exponential Vasicek-type construction:</p>
+<div class="math notranslate nohighlight">
+\[Y_k(t)
+=
+(g_k(t)+s_k)\exp\!\left(X_k(t) - \tfrac12 v_k^2(t)\right) - s_k,\]</div>
+<p>with per-pillar OU drivers (correlated across pillars). The model does not impose a
+short-rate representation, an instantaneous forward-rate model, nor HJM drift
+restrictions, hence does not guarantee joint curve consistency along paths.</p>
+</section>
+<section id="theory-corroboration">
+<h2>Theory corroboration<a class="headerlink" href="#theory-corroboration" title="Link to this heading"></a></h2>
+<p>In arbitrage-free short-rate or HJM frameworks, discount factors satisfy the pathwise
+multiplicative identity:</p>
+<div class="math notranslate nohighlight">
+\[DF(t,t+T) = DF(t,t+u)\cdot DF(t+u,t+T), \qquad \forall\ 0&lt;u&lt;T.\]</div>
+<p>Because the current model infers discount factors at time <span class="math notranslate nohighlight">\(t\)</span> from the simulated curve
+at <span class="math notranslate nohighlight">\(t\)</span>, and discount factors at <span class="math notranslate nohighlight">\(t+u\)</span> from an independently simulated curve at
+<span class="math notranslate nohighlight">\(t+u\)</span>, no structural constraint enforces this identity, and violations are expected.</p>
+</section>
+<section id="practical-implications-for-pfe">
+<h2>Practical implications for PFE<a class="headerlink" href="#practical-implications-for-pfe" title="Link to this heading"></a></h2>
+<p>This limitation may result in:</p>
+<ul class="simple">
+<li><p>static inconsistencies (e.g. non-monotone discount factors at a snapshot),</p></li>
+<li><p>dynamic inconsistencies (long-horizon discount factors not matching compounded shorter intervals),</p></li>
+<li><p>potential bias for long-dated portfolios where pathwise discounting matters.</p></li>
+</ul>
+</section>
+<section id="validation-tests-and-diagnostics">
+<h2>Validation tests and diagnostics<a class="headerlink" href="#validation-tests-and-diagnostics" title="Link to this heading"></a></h2>
+<section id="test-1a-static-discount-factor-monotonicity">
+<h3>Test 1A — Static discount-factor monotonicity<a class="headerlink" href="#test-1a-static-discount-factor-monotonicity" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>Objective:</dt><dd><p>Verify absence of static arbitrage at each simulation time.</p>
+</dd>
+<dt>Definition:</dt><dd><p>For maturity pillars <span class="math notranslate nohighlight">\(M_k\)</span> (year fractions),</p>
+</dd>
+</dl>
+<div class="math notranslate nohighlight">
+\[DF(t_i,t_i+M_k) := \exp(-Y_k(t_i)\,M_k),\]</div>
+<p>and the condition:</p>
+<div class="math notranslate nohighlight">
+\[DF(t_i,t_i+M_{k+1}) \le DF(t_i,t_i+M_k), \quad \forall k.\]</div>
+<dl class="simple">
+<dt>Outputs:</dt><dd><p>Violation frequency, max breach severity, time×pillar heatmap.</p>
+</dd>
+</dl>
+</section>
+<section id="test-1b-forward-rate-reconstruction-sanity">
+<h3>Test 1B — Forward-rate reconstruction sanity<a class="headerlink" href="#test-1b-forward-rate-reconstruction-sanity" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>Objective:</dt><dd><p>Ensure implied forwards between pillars remain stable and plausible.</p>
+</dd>
+</dl>
+<p>Definition for <span class="math notranslate nohighlight">\(M_i&lt;M_j\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[F_{i,j}(t)
+=
+\frac{Y_j(t)M_j - Y_i(t)M_i}{M_j - M_i}.\]</div>
+<dl class="simple">
+<dt>Outputs:</dt><dd><p>Distributional diagnostics and curvature/kink metrics.</p>
+</dd>
+</dl>
+</section>
+<section id="test-1c-pathwise-df-multiplicative-wedge-core-test">
+<h3>Test 1C — Pathwise DF multiplicative wedge (core test)<a class="headerlink" href="#test-1c-pathwise-df-multiplicative-wedge-core-test" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>Objective:</dt><dd><p>Quantify failure of pathwise multiplicative discounting identity.</p>
+</dd>
+</dl>
+<p>Definition:</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{Wedge}(t,u,T)
+=
+\log DF(t,t+T) - \log DF(t,t+u) - \log DF(t+u,t+T).\]</div>
+<dl class="simple">
+<dt>Outputs:</dt><dd><p>Wedge distribution, percentile bands, exceedance rates.</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="illustrations">
+<h2>Illustrations<a class="headerlink" href="#illustrations" title="Link to this heading"></a></h2>
+<p>Recommended figures produced by the demo script:</p>
+<ul class="simple">
+<li><p>DF monotonicity violation heatmaps</p></li>
+<li><p>kink index bands (median and 5/95%)</p></li>
+<li><p>wedge histograms (long maturity)</p></li>
+<li><p>wedge magnitude vs maturity (e.g. p95(<a href="#id1"><span class="problematic" id="id2">|wedge|</span></a>))</p></li>
+</ul>
+</section>
+<section id="how-to-run">
+<h2>How to run<a class="headerlink" href="#how-to-run" title="Link to this heading"></a></h2>
+<p>From repo root:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>xva_engine.scripts.run_ir_validations_and_plots_demo
+</pre></div>
+</div>
+<p>Outputs are saved under:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>outputs/finding1/
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Validation Findings" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../api/index.html" class="btn btn-neutral float-right" title="Validation API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Amine Badii.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

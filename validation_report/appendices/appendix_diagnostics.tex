@@ -1,0 +1,95 @@
+\section{Appendix B — Formal diagnostic definitions}
+\label{app:diagnostics}
+
+\subsection{Static discount-factor monotonicity test}
+
+Let $\{T_k\}_{k=0}^{K}$ denote maturity pillars and let
+$P^{(n)}(t_i,T_k)$ be the simulated discount factor on path $n$ at time $t_i$.
+
+Define the indicator of a monotonicity violation on path $n$ as:
+\[
+\mathbb{I}^{(n)}_{i,k}
+=
+\mathbf{1}\!\left\{
+P^{(n)}(t_i,T_{k+1}) > P^{(n)}(t_i,T_k)
+\right\}.
+\]
+
+The empirical violation frequency is:
+\[
+\widehat{p}_{i,k}
+=
+\frac{1}{N}
+\sum_{n=1}^{N}
+\mathbb{I}^{(n)}_{i,k}.
+\]
+
+This diagnostic captures static violations of the basic no-arbitrage ordering
+of discount factors across maturities.
+
+\subsection{Kink index: cross-tenor smoothness diagnostic}
+
+Let $z^{(n)}(t_i,T_k)$ denote the simulated zero rate at pillar $T_k$.
+Define the discrete second difference:
+\[
+\Delta^2 z^{(n)}_{i,k}
+=
+z^{(n)}(t_i,T_{k+1})
+-
+2z^{(n)}(t_i,T_k)
++
+z^{(n)}(t_i,T_{k-1}),
+\quad k=1,\dots,K-1.
+\]
+
+The \emph{kink index} for path $n$ at time $t_i$ is defined as:
+\[
+\mathrm{Kink}^{(n)}(t_i)
+=
+\sum_{k=1}^{K-1}
+w_k
+\left|
+\Delta^2 z^{(n)}_{i,k}
+\right|,
+\]
+where $w_k$ are optional scaling weights (e.g.\ based on maturity spacing).
+
+The kink index measures local curvature and detects abrupt slope changes between
+adjacent pillars. Large values indicate reduced cross-tenor smoothness and
+economically implausible curve shapes.
+
+\subsection{Discount-factor wedge: multiplicative consistency diagnostic}
+
+For a fixed horizon $T$ and increment $u>0$, define the theoretical identity:
+\[
+P(t,T+u) \equiv P(t,T)\,P(t,T,T+u).
+\]
+
+Let $\widehat{P}^{(n)}(t;T,T+u)$ denote the forward discount factor reconstructed
+from simulated quantities (e.g.\ via zero-rate interpolation).
+
+The \emph{discount-factor wedge} is defined as:
+\[
+\mathrm{Wedge}^{(n)}(t;T,u)
+=
+\log P^{(n)}(t,T+u)
+-
+\log P^{(n)}(t,T)
+-
+\log \widehat{P}^{(n)}(t;T,T+u).
+\]
+
+Under pathwise arbitrage-free dynamics, the wedge should be identically zero
+(up to numerical error). Persistent dispersion or maturity-dependent growth
+of the wedge indicates structural inconsistency.
+
+\subsection{Interpretation and complementarity}
+
+\begin{itemize}
+	\item DF monotonicity tests static arbitrage constraints.
+	\item The kink index captures cross-sectional smoothness and local coherence.
+	\item The wedge diagnostic targets dynamic multiplicative consistency.
+\end{itemize}
+
+Together, these diagnostics provide comprehensive coverage of pathwise
+arbitrage-free properties.

@@ -1,0 +1,39 @@
+\subsection{RMS difference (interpolation sensitivity)}
+Given a dense maturity grid $\{T_j\}_{j=1}^{J}$ and two interpolated curves
+$\tilde z^{(1)}(t,T)$ and $\tilde z^{(2)}(t,T)$ derived from the same pillar data,
+define pointwise differences:
+\[
+\Delta z(t,T_j) = \tilde z^{(1)}(t,T_j) - \tilde z^{(2)}(t,T_j).
+\]
+The root-mean-square (RMS) difference at time $t$ is:
+\[
+\mathrm{RMS}_z(t)
+=
+\sqrt{\frac{1}{J}\sum_{j=1}^{J}\big(\Delta z(t,T_j)\big)^2}.
+\]
+RMS provides a stable measure of the typical magnitude of interpolation discrepancies while
+penalising large local deviations.
+
+\subsection{Implied forward curve and roughness proxy}
+On a dense maturity grid, the instantaneous forward curve is defined by:
+\[
+f(t,T) = \frac{\partial}{\partial T}\big(T\,\tilde z(t,T)\big).
+\]
+A roughness proxy used in the diagnostics is the integrated absolute curvature:
+\[
+R_f(t) = \int \left|\frac{\partial^2 f(t,T)}{\partial T^2}\right|\,dT,
+\]
+approximated numerically using finite differences. Elevated $R_f(t)$ indicates oscillatory or
+non-smooth forward curves potentially induced by discretisation and interpolation.
+
+\subsection{Pillar density stress metric}
+Let $\tilde z^{\mathrm{full}}(t,T)$ denote the interpolated curve reconstructed from the full pillar set
+and $\tilde z^{\mathrm{coarse}}(t,T)$ the curve reconstructed from a coarse pillar subset. Define:
+\[
+\Delta z_{\mathrm{dens}}(t,T_j) = \tilde z^{\mathrm{coarse}}(t,T_j) - \tilde z^{\mathrm{full}}(t,T_j),
+\quad
+\mathrm{RMS}_{\mathrm{dens}}(t)
+=
+\sqrt{\frac{1}{J}\sum_{j=1}^{J}\big(\Delta z_{\mathrm{dens}}(t,T_j)\big)^2}.
+\]
+Large values indicate grid dependence of reconstructed curves.

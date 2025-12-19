@@ -1,0 +1,82 @@
+\documentclass[11pt,a4paper]{article}
+
+% ----------------------------
+% Packages
+% ----------------------------
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{parskip}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+% Optional, if you use UML
+% \usepackage{plantuml}
+
+% ----------------------------
+% Hyperref setup
+% ----------------------------
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	citecolor=blue,
+	urlcolor=blue
+}
+
+% ----------------------------
+% Project metadata
+% ----------------------------
+\title{IR Simulation Model Validation Notes \\ \large Findings  Term-Structure Diagnostics}
+\author{Amine Badii}
+
+
+% ----------------------------
+% Paths for figures
+% ----------------------------
+% Adjust if your figures are elsewhere.
+% If your images are in ../outputs/... relative to a section file, prefer to standardise.
+\graphicspath{ {figures/finding1/}}
+
+\begin{document}
+	\maketitle
+	\tableofcontents
+	\newpage
+	
+	% ==========================================================
+	% Main Body
+	% ==========================================================
+	
+	\section{Scope and objective}
+	This document substantiates key validation findings for the interest-rate simulation
+	framework used for PFE, with emphasis on pathwise arbitrage diagnostics and
+	benchmarking against an arbitrage-free reference model (HW1F).
+	
+	% --- Include Finding 1 section ---
+	% Put your rewritten Finding 1 into sections/finding1.tex (recommended),
+	% or change the path below accordingly.
+	\input{sections/finding1}
+	
+	% ==========================================================
+	% Appendices
+	% ==========================================================
+	
+	\newpage
+	\appendix
+	
+	\input{appendices/appendix_theory}
+	\input{appendices/appendix_diagnostics}
+	\input{appendices/appendix_algorithms}
+	
+\end{document}

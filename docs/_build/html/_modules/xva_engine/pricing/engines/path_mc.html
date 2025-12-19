@@ -1,0 +1,226 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>xva_engine.pricing.engines.path_mc &mdash; XVA / CCR / PFE Engine  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            XVA / CCR / PFE Engine
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../architecture.html">Architecture &amp; Design View</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../simulation_models.html">Simulation Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/api/modules.html">xva_engine</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">XVA / CCR / PFE Engine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">xva_engine.pricing.engines.path_mc</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for xva_engine.pricing.engines.path_mc</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">PricingEngine</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...instruments.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Instrument</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...instruments.vanilla</span><span class="w"> </span><span class="kn">import</span> <span class="n">EuropeanOption</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..context</span><span class="w"> </span><span class="kn">import</span> <span class="n">PricingContext</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...core.cube</span><span class="w"> </span><span class="kn">import</span> <span class="n">RiskFactorCube</span>
+
+
+<div class="viewcode-block" id="PathwiseMCEngine">
+<a class="viewcode-back" href="../../../../source/api/xva_engine.pricing.engines.path_mc.html#xva_engine.pricing.engines.path_mc.PathwiseMCEngine">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PathwiseMCEngine</span><span class="p">(</span><span class="n">PricingEngine</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simple pathwise Monte Carlo engine for European options.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This engine assumes that the `RiskFactorCube` contains the underlying</span>
+<span class="sd">    price as one of the factors, and that the time grid includes the</span>
+<span class="sd">    option maturity (or very close to it). Discounting is performed using</span>
+<span class="sd">    a flat risk-free rate from the `PricingContext`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">underlying_factor_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">risk_free_curve_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">maturity_tolerance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">underlying_factor_name</span> <span class="o">=</span> <span class="n">underlying_factor_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">risk_free_curve_key</span> <span class="o">=</span> <span class="n">risk_free_curve_key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maturity_tolerance</span> <span class="o">=</span> <span class="n">maturity_tolerance</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_find_factor_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cube</span><span class="p">:</span> <span class="n">RiskFactorCube</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cube</span><span class="o">.</span><span class="n">factors</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">underlying_factor_name</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Factor </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">underlying_factor_name</span><span class="si">}</span><span class="s2"> not in cube.factors&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+
+<div class="viewcode-block" id="PathwiseMCEngine.price">
+<a class="viewcode-back" href="../../../../source/api/xva_engine.pricing.engines.path_mc.html#xva_engine.pricing.engines.path_mc.PathwiseMCEngine.price">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">price</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inst</span><span class="p">:</span> <span class="n">Instrument</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">PricingContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Single-valuation pricing is not implemented here; use `price_paths`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Use price_paths() with a RiskFactorCube for MC valuation.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PathwiseMCEngine.price_paths">
+<a class="viewcode-back" href="../../../../source/api/xva_engine.pricing.engines.path_mc.html#xva_engine.pricing.engines.path_mc.PathwiseMCEngine.price_paths">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">price_paths</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">inst</span><span class="p">:</span> <span class="n">Instrument</span><span class="p">,</span>
+        <span class="n">cube</span><span class="p">:</span> <span class="n">RiskFactorCube</span><span class="p">,</span>
+        <span class="n">ctx</span><span class="p">:</span> <span class="n">PricingContext</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Price a EuropeanOption along all scenarios and times in the cube.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        inst : Instrument</span>
+<span class="sd">            Must be a `EuropeanOption`.</span>
+<span class="sd">        cube : RiskFactorCube</span>
+<span class="sd">            Simulated underlying paths.</span>
+<span class="sd">        ctx : PricingContext</span>
+<span class="sd">            Provides risk-free rate via market environment.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        numpy.ndarray</span>
+<span class="sd">            Array of shape ``(n_scenarios, n_times)`` with discounted</span>
+<span class="sd">            option value at each time. For this demo, the value is</span>
+<span class="sd">            non-zero only at or after maturity.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inst</span><span class="p">,</span> <span class="n">EuropeanOption</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;PathwiseMCEngine currently supports only EuropeanOption.&quot;</span><span class="p">)</span>
+
+        <span class="n">factor_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_factor_index</span><span class="p">(</span><span class="n">cube</span><span class="p">)</span>
+        <span class="n">underlying_paths</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">factor_idx</span><span class="p">]</span>  <span class="c1"># (n_scenarios, n_times)</span>
+
+        <span class="n">times</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">time_grid</span><span class="o">.</span><span class="n">as_array</span><span class="p">()</span>
+        <span class="n">n_scenarios</span><span class="p">,</span> <span class="n">n_times</span> <span class="o">=</span> <span class="n">underlying_paths</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="c1"># Locate maturity index</span>
+        <span class="n">maturity</span> <span class="o">=</span> <span class="n">inst</span><span class="o">.</span><span class="n">maturity</span>
+        <span class="n">maturity_idx</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">times</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">maturity</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maturity_tolerance</span><span class="p">:</span>
+                <span class="n">maturity_idx</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="n">maturity_idx</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Maturity </span><span class="si">{</span><span class="n">maturity</span><span class="si">}</span><span class="s2"> not found in time grid (tolerance=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">maturity_tolerance</span><span class="si">}</span><span class="s2">).&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Get flat risk-free rate</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">market_env</span><span class="o">.</span><span class="n">get_curve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">risk_free_curve_key</span><span class="p">)</span>
+
+        <span class="c1"># Payoff at maturity</span>
+        <span class="n">s_T</span> <span class="o">=</span> <span class="n">underlying_paths</span><span class="p">[:,</span> <span class="n">maturity_idx</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">inst</span><span class="o">.</span><span class="n">option_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;call&quot;</span><span class="p">:</span>
+            <span class="n">payoff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">s_T</span> <span class="o">-</span> <span class="n">inst</span><span class="o">.</span><span class="n">strike</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">payoff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">inst</span><span class="o">.</span><span class="n">strike</span> <span class="o">-</span> <span class="n">s_T</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+
+        <span class="c1"># Discount factor from 0 to maturity</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">r</span> <span class="o">*</span> <span class="n">maturity</span><span class="p">)</span>
+
+        <span class="c1"># Discounted payoff</span>
+        <span class="n">discounted_payoff</span> <span class="o">=</span> <span class="n">df</span> <span class="o">*</span> <span class="n">payoff</span>  <span class="c1"># shape: (n_scenarios,)</span>
+
+        <span class="c1"># For simplicity: set value constant = discounted payoff after maturity,</span>
+        <span class="c1"># and zero before maturity.</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_scenarios</span><span class="p">,</span> <span class="n">n_times</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">times</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">t</span> <span class="o">&gt;=</span> <span class="n">maturity</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">maturity_tolerance</span><span class="p">:</span>
+                <span class="n">values</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">discounted_payoff</span>
+
+        <span class="k">return</span> <span class="n">values</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Amine Badii.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -12,11 +12,12 @@ copyright = f"{year}, {author}"
 
 extensions = [
     "sphinx.ext.autodoc",
-    "sphinx.ext.napoleon",           # Google / NumPy style docstrings
-    "sphinx.ext.autodoc.typehints",  # type hints in docs
+    "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
-    "sphinxcontrib.plantuml",        # UML diagrams
+    "sphinx_autodoc_typehints",  # requires: pip install sphinx-autodoc-typehints
+    "sphinxcontrib.plantuml",    # requires: pip install sphinxcontrib-plantuml
 ]
+
 
 # Autodoc settings
 autodoc_member_order = "bysource"

@@ -1,4 +1,3 @@
-#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
 from __future__ import annotations
 
 from dataclasses import dataclass

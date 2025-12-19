@@ -1,0 +1,256 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IR Validation: Arbitrage-Free Diagnostics (Finding 1) &mdash; XVA / CCR / PFE Engine  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="API Reference" href="../../api.html" />
+    <link rel="prev" title="Validation API" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            XVA / CCR / PFE Engine
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture &amp; Design View</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulation_models/index.html">Simulation Models</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Validation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../findings/index.html">Validation Findings</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Validation API</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">IR Validation: Arbitrage-Free Diagnostics (Finding 1)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-xva_engine.validation.ir.arbitrage_free.metrics">Core metrics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-xva_engine.validation.ir.arbitrage_free.test_df_monotonicity">DF monotonicity test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-xva_engine.validation.ir.arbitrage_free.test_forward_reconstruction">Forward reconstruction test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-xva_engine.validation.ir.arbitrage_free.test_discount_factor_wedge">Discount factor wedge test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-xva_engine.validation.ir.reporting.plots_arbitrage">Reporting / plotting</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/api/modules.html">xva_engine</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">XVA / CCR / PFE Engine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Validation</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Validation API</a></li>
+      <li class="breadcrumb-item active">IR Validation: Arbitrage-Free Diagnostics (Finding 1)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/validation/api/ir_arbitrage_free.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ir-validation-arbitrage-free-diagnostics-finding-1">
+<h1>IR Validation: Arbitrage-Free Diagnostics (Finding 1)<a class="headerlink" href="#ir-validation-arbitrage-free-diagnostics-finding-1" title="Link to this heading"></a></h1>
+<section id="module-xva_engine.validation.ir.arbitrage_free.metrics">
+<span id="core-metrics"></span><h2>Core metrics<a class="headerlink" href="#module-xva_engine.validation.ir.arbitrage_free.metrics" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="xva_engine.validation.ir.arbitrage_free.metrics.pillars_years">
+<span class="sig-prename descclassname"><span class="pre">xva_engine.validation.ir.arbitrage_free.metrics.</span></span><span class="sig-name descname"><span class="pre">pillars_years</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pillars_days</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">day_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">365.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/xva_engine/validation/ir/arbitrage_free/metrics.html#pillars_years"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.validation.ir.arbitrage_free.metrics.pillars_years" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="xva_engine.validation.ir.arbitrage_free.metrics.discount_factors_from_zero_rates">
+<span class="sig-prename descclassname"><span class="pre">xva_engine.validation.ir.arbitrage_free.metrics.</span></span><span class="sig-name descname"><span class="pre">discount_factors_from_zero_rates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pillars_days</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">day_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">365.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/xva_engine/validation/ir/arbitrage_free/metrics.html#discount_factors_from_zero_rates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.validation.ir.arbitrage_free.metrics.discount_factors_from_zero_rates" title="Link to this definition"></a></dt>
+<dd><p>rates: (P,T,K) continuous zero rates
+DF(t,t+M_k)=exp(-rate*M_k_years)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="xva_engine.validation.ir.arbitrage_free.metrics.df_monotonicity_violations">
+<span class="sig-prename descclassname"><span class="pre">xva_engine.validation.ir.arbitrage_free.metrics.</span></span><span class="sig-name descname"><span class="pre">df_monotonicity_violations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/xva_engine/validation/ir/arbitrage_free/metrics.html#df_monotonicity_violations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.validation.ir.arbitrage_free.metrics.df_monotonicity_violations" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="xva_engine.validation.ir.arbitrage_free.metrics.implied_forward">
+<span class="sig-prename descclassname"><span class="pre">xva_engine.validation.ir.arbitrage_free.metrics.</span></span><span class="sig-name descname"><span class="pre">implied_forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r_i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_j</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M_i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M_j</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/xva_engine/validation/ir/arbitrage_free/metrics.html#implied_forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.validation.ir.arbitrage_free.metrics.implied_forward" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="xva_engine.validation.ir.arbitrage_free.metrics.kink_index">
+<span class="sig-prename descclassname"><span class="pre">xva_engine.validation.ir.arbitrage_free.metrics.</span></span><span class="sig-name descname"><span class="pre">kink_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/xva_engine/validation/ir/arbitrage_free/metrics.html#kink_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.validation.ir.arbitrage_free.metrics.kink_index" title="Link to this definition"></a></dt>
+<dd><p>max abs second diff along pillars, returns (P,T)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="xva_engine.validation.ir.arbitrage_free.metrics.interp_rate_at_maturity">
+<span class="sig-prename descclassname"><span class="pre">xva_engine.validation.ir.arbitrage_free.metrics.</span></span><span class="sig-name descname"><span class="pre">interp_rate_at_maturity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rates_t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/xva_engine/validation/ir/arbitrage_free/metrics.html#interp_rate_at_maturity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.validation.ir.arbitrage_free.metrics.interp_rate_at_maturity" title="Link to this definition"></a></dt>
+<dd><p>rates_t: (P,K) rates across pillars at fixed time
+returns: (P,) interpolated rate at maturity target (years)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="xva_engine.validation.ir.arbitrage_free.metrics.df_wedge_one_step">
+<span class="sig-prename descclassname"><span class="pre">xva_engine.validation.ir.arbitrage_free.metrics.</span></span><span class="sig-name descname"><span class="pre">df_wedge_one_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_grid_years</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pillars_days</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_pillar_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">day_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">365.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/xva_engine/validation/ir/arbitrage_free/metrics.html#df_wedge_one_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.validation.ir.arbitrage_free.metrics.df_wedge_one_step" title="Link to this definition"></a></dt>
+<dd><p>wedge = log DF(t,T) - log DF(t,u) - log DF(t+u,T-u)
+using interpolated rates at maturities u and T-u.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-xva_engine.validation.ir.arbitrage_free.test_df_monotonicity">
+<span id="df-monotonicity-test"></span><h2>DF monotonicity test<a class="headerlink" href="#module-xva_engine.validation.ir.arbitrage_free.test_df_monotonicity" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="xva_engine.validation.ir.arbitrage_free.test_df_monotonicity.run_df_monotonicity_test">
+<span class="sig-prename descclassname"><span class="pre">xva_engine.validation.ir.arbitrage_free.test_df_monotonicity.</span></span><span class="sig-name descname"><span class="pre">run_df_monotonicity_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pillars_days</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/xva_engine/validation/ir/arbitrage_free/test_df_monotonicity.html#run_df_monotonicity_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.validation.ir.arbitrage_free.test_df_monotonicity.run_df_monotonicity_test" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-xva_engine.validation.ir.arbitrage_free.test_forward_reconstruction">
+<span id="forward-reconstruction-test"></span><h2>Forward reconstruction test<a class="headerlink" href="#module-xva_engine.validation.ir.arbitrage_free.test_forward_reconstruction" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="xva_engine.validation.ir.arbitrage_free.test_forward_reconstruction.run_forward_sanity_test">
+<span class="sig-prename descclassname"><span class="pre">xva_engine.validation.ir.arbitrage_free.test_forward_reconstruction.</span></span><span class="sig-name descname"><span class="pre">run_forward_sanity_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pillars_days</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/xva_engine/validation/ir/arbitrage_free/test_forward_reconstruction.html#run_forward_sanity_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.validation.ir.arbitrage_free.test_forward_reconstruction.run_forward_sanity_test" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-xva_engine.validation.ir.arbitrage_free.test_discount_factor_wedge">
+<span id="discount-factor-wedge-test"></span><h2>Discount factor wedge test<a class="headerlink" href="#module-xva_engine.validation.ir.arbitrage_free.test_discount_factor_wedge" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="xva_engine.validation.ir.arbitrage_free.test_discount_factor_wedge.run_df_wedge_test">
+<span class="sig-prename descclassname"><span class="pre">xva_engine.validation.ir.arbitrage_free.test_discount_factor_wedge.</span></span><span class="sig-name descname"><span class="pre">run_df_wedge_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_grid_years</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pillars_days</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_pillar_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/xva_engine/validation/ir/arbitrage_free/test_discount_factor_wedge.html#run_df_wedge_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.validation.ir.arbitrage_free.test_discount_factor_wedge.run_df_wedge_test" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-xva_engine.validation.ir.reporting.plots_arbitrage">
+<span id="reporting-plotting"></span><h2>Reporting / plotting<a class="headerlink" href="#module-xva_engine.validation.ir.reporting.plots_arbitrage" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="xva_engine.validation.ir.reporting.plots_arbitrage.plot_df_monotonicity_heatmap">
+<span class="sig-prename descclassname"><span class="pre">xva_engine.validation.ir.reporting.plots_arbitrage.</span></span><span class="sig-name descname"><span class="pre">plot_df_monotonicity_heatmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freq_time_pillar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/xva_engine/validation/ir/reporting/plots_arbitrage.html#plot_df_monotonicity_heatmap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.validation.ir.reporting.plots_arbitrage.plot_df_monotonicity_heatmap" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="xva_engine.validation.ir.reporting.plots_arbitrage.plot_kink_index_bands">
+<span class="sig-prename descclassname"><span class="pre">xva_engine.validation.ir.reporting.plots_arbitrage.</span></span><span class="sig-name descname"><span class="pre">plot_kink_index_bands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kink</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_grid_years</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/xva_engine/validation/ir/reporting/plots_arbitrage.html#plot_kink_index_bands"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.validation.ir.reporting.plots_arbitrage.plot_kink_index_bands" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="xva_engine.validation.ir.reporting.plots_arbitrage.plot_wedge_histogram">
+<span class="sig-prename descclassname"><span class="pre">xva_engine.validation.ir.reporting.plots_arbitrage.</span></span><span class="sig-name descname"><span class="pre">plot_wedge_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wedge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/xva_engine/validation/ir/reporting/plots_arbitrage.html#plot_wedge_histogram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.validation.ir.reporting.plots_arbitrage.plot_wedge_histogram" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="xva_engine.validation.ir.reporting.plots_arbitrage.plot_wedge_vs_maturity">
+<span class="sig-prename descclassname"><span class="pre">xva_engine.validation.ir.reporting.plots_arbitrage.</span></span><span class="sig-name descname"><span class="pre">plot_wedge_vs_maturity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maturities_years</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/xva_engine/validation/ir/reporting/plots_arbitrage.html#plot_wedge_vs_maturity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xva_engine.validation.ir.reporting.plots_arbitrage.plot_wedge_vs_maturity" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Validation API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../api.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Amine Badii.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
